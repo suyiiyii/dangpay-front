@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+const app = createApp(App);
 
 // import "~/styles/element/index.scss";
 
@@ -14,7 +15,21 @@ import "uno.css";
 
 // If you want to use ElMessage, import it.
 import "element-plus/theme-chalk/src/message.scss";
+import "element-plus/theme-chalk/src/message-box.scss";
 
-const app = createApp(App);
+// element 图标
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
+
+// pinia
+import { createPinia } from "pinia";
+const pinia = createPinia();
+app.use(pinia)
+
+import router from "./router";
+app.use(router);
+
 // app.use(ElementPlus);
 app.mount("#app");

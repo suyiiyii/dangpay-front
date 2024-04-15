@@ -3,9 +3,10 @@ import { toggleDark } from "~/composables";
 </script>
 
 <template>
-  <el-menu class="el-menu-demo" mode="horizontal">
-    <el-menu-item index="1">Element Plus</el-menu-item>
-    <el-sub-menu index="2">
+  <el-menu class="el-menu-demo" mode="horizontal" default-active="1">
+    <el-menu-item index="1">DangPay</el-menu-item>
+    <!-- <el-menu-item index="1">Element Plus</el-menu-item> -->
+    <!-- <el-sub-menu index="2">
       <template #title>Workspace</template>
       <el-menu-item index="2-1">item one</el-menu-item>
       <el-menu-item index="2-2">item two</el-menu-item>
@@ -18,7 +19,7 @@ import { toggleDark } from "~/composables";
       </el-sub-menu>
     </el-sub-menu>
     <el-menu-item index="3" disabled>Info</el-menu-item>
-    <el-menu-item index="4">Orders</el-menu-item>
+    <el-menu-item index="4">Orders</el-menu-item> -->
     <el-menu-item h="full" @click="toggleDark()">
       <button
         class="border-none w-full bg-transparent cursor-pointer"

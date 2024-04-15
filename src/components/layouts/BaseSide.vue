@@ -1,12 +1,42 @@
 <template>
   <el-menu
-    default-active="2"
+    :default-active="router.currentRoute.value.fullPath"
     class="el-menu-vertical-demo"
     :collapse="isCollapse"
     @open="handleOpen"
     @close="handleClose"
   >
-    <el-sub-menu index="1">
+    <RouterLink to="/">
+      <el-menu-item index="/">
+        <el-icon><House /></el-icon>
+        <template #title> 主页 </template>
+      </el-menu-item>
+    </RouterLink>
+    <RouterLink to="/table">
+      <el-menu-item index="/table">
+        <el-icon><Menu /></el-icon>
+        <template #title> 选桌子 </template>
+      </el-menu-item>
+    </RouterLink>
+    <RouterLink to="/dish">
+      <el-menu-item index="/dish">
+        <el-icon><Food /></el-icon>
+        <template #title> 点菜 </template>
+      </el-menu-item>
+    </RouterLink>
+    <RouterLink to="/order">
+      <el-menu-item index="/order">
+        <el-icon><Wallet /></el-icon>
+        <template #title> 结账 </template>
+      </el-menu-item>
+    </RouterLink>
+    <RouterLink to="/myorder">
+      <el-menu-item index="/myorder">
+        <el-icon><List /></el-icon>
+        <template #title> 订单 </template>
+      </el-menu-item>
+    </RouterLink>
+    <!-- <el-sub-menu index="1">
       <template #title>
         <el-icon><location /></el-icon>
         <span>Navigator One</span>
@@ -23,8 +53,8 @@
         <template #title><span>item four</span></template>
         <el-menu-item index="1-4-1">item one</el-menu-item>
       </el-sub-menu>
-    </el-sub-menu>
-    <el-menu-item index="2">
+    </el-sub-menu> -->
+    <!-- <el-menu-item index="2">
       <el-icon><icon-menu /></el-icon>
       <template #title>Navigator Two</template>
     </el-menu-item>
@@ -35,7 +65,7 @@
     <el-menu-item index="4">
       <el-icon><setting /></el-icon>
       <template #title>Navigator Four</template>
-    </el-menu-item>
+    </el-menu-item> -->
   </el-menu>
 </template>
 
@@ -47,8 +77,12 @@ import {
   Menu as IconMenu,
   Setting,
 } from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
 
-const isCollapse = ref(true);
+const router = useRouter();
+
+// const isCollapse = ref(true);
+const isCollapse = ref(false);
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -56,3 +90,13 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 </script>
+
+<style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+a {
+  text-decoration: none;
+}
+</style>
