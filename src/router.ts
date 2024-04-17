@@ -1,17 +1,27 @@
 // src/router/index.ts
+import { pa } from "element-plus/es/locale";
+import path from "path";
 import {
   createRouter,
   createWebHistory,
   createWebHashHistory,
 } from "vue-router";
-// import HomePage from "./page/HomePage.vue";
-// import HelloWorld from "./components/HelloWorld.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: () => import("./page/LoginView.vue"),
+  },
+  {
+    path: "/group",
+    name: "Group",
+    component: () => import("./page/GroupView.vue"),
+  },
+  {
+    path: "/group/:id",
+    name: "GroupDetail",
+    component: () => import("./page/GroupDetailView.vue"),
   },
 
   // 其他路由...

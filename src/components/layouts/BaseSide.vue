@@ -12,13 +12,13 @@
         <template #title> 主页 </template>
       </el-menu-item>
     </RouterLink>
-    <RouterLink to="/table">
-      <el-menu-item index="/table">
+    <RouterLink to="/group">
+      <el-menu-item index="/group">
         <el-icon><Menu /></el-icon>
-        <template #title> 选桌子 </template>
+        <template #title> 群组 </template>
       </el-menu-item>
     </RouterLink>
-    <RouterLink to="/dish">
+    <!-- <RouterLink to="/dish">
       <el-menu-item index="/dish">
         <el-icon><Food /></el-icon>
         <template #title> 点菜 </template>
@@ -35,7 +35,7 @@
         <el-icon><List /></el-icon>
         <template #title> 订单 </template>
       </el-menu-item>
-    </RouterLink>
+    </RouterLink> -->
     <!-- <el-sub-menu index="1">
       <template #title>
         <el-icon><location /></el-icon>

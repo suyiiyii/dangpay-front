@@ -1,0 +1,132 @@
+<template>
+  <div class="group-view">
+    <h1>群组列表</h1>
+    <template v-for="group in groups">
+      <p
+        @click="router.push({ name: 'GroupDetail', params: { id: group.id } })"
+      >
+        {{ group }}
+      </p>
+      <!-- 加入群组按钮 -->
+      <el-button type="primary" @click="joinGroup(group.id)"
+        >加入群组</el-button
+      >
+      <!-- ban群组按钮 -->
+      <el-button type="danger" @click="banGroup(group.id)">ban群组</el-button>
+      <!-- unban群组按钮 -->
+      <el-button type="danger" @click="unbanGroup(group.id)"
+        >unban群组</el-button
+      >
+      <hr />
+    </template>
+    <h1>创建群组</h1>
+
+    <el-form :model="groupFrom">
+      <!-- 表单项：name -->
+      <el-form-item label="名称：">
+        <el-input v-model="groupFrom.name"></el-input>
+      </el-form-item>
+
+      <!-- 表单项：pepoleCount -->
+      <el-form-item label="人数：">
+        <el-input v-model="groupFrom.pepoleCount"></el-input>
+      </el-form-item>
+
+      <!-- 表单项：enterpriseScale -->
+      <el-form-item label="企业规模：">
+        <el-input v-model="groupFrom.enterpriseScale"></el-input>
+      </el-form-item>
+
+      <!-- 表单项：industry -->
+      <el-form-item label="行业：">
+        <el-input v-model="groupFrom.industry"></el-input>
+      </el-form-item>
+
+      <!-- 表单项：address -->
+      <el-form-item label="地址：">
+        <el-input v-model="groupFrom.address"></el-input>
+      </el-form-item>
+
+      <!-- 表单项：contact -->
+      <el-form-item label="联系方式：">
+        <el-input v-model="groupFrom.contact"></el-input>
+      </el-form-item>
+
+      <!-- 按钮：更新信息 -->
+      <el-button type="primary" @click="createGroup">创建群组</el-button>
+    </el-form>
+
+    <h1>我的群组</h1>
+    <template v-for="group in myGroups">
+      <p
+        @click="router.push({ name: 'GroupDetail', params: { id: group.id } })"
+      >
+        {{ group }}
+      </p>
+    </template>
+  </div>
+</template>
+
+<script setup>
+import { onMounted, ref } from "vue";
+import useRequest from "~/request";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const request = useRequest();
+const groups = ref([]);
+const myGroups = ref([]);
+
+const getGroups = () => {
+  request.get("/group").then((res) => {
+    groups.value = res.data;
+  });
+};
+
+const groupFrom = ref({
+  name: "",
+  pepoleCount: "",
+  enterpriseScale: "",
+  industry: "",
+  address: "",
+  contact: "",
+});
+
+const createGroup = () => {
+  request.post("/group", groupFrom.value).then((res) => {
+    getGroups();
+  });
+};
+
+const getMyGroups = () => {
+  request.get("/group/my").then((res) => {
+    myGroups.value = res.data;
+  });
+};
+
+const joinGroup = (groupId) => {
+  request.post("/group/" + groupId + "/join/").then((res) => {
+    ElMessage.success("加入成功");
+    getMyGroups();
+  });
+};
+
+const banGroup = (groupId) => {
+  request.post("/group/" + groupId + "/ban/").then((res) => {
+    ElMessage.success("ban成功");
+    getGroups();
+  });
+};
+
+const unbanGroup = (groupId) => {
+  request.post("/group/" + groupId + "/unban/").then((res) => {
+    ElMessage.success("unban成功");
+    getGroups();
+  });
+};
+
+onMounted(() => {
+  getGroups();
+  getMyGroups();
+});
+</script>
