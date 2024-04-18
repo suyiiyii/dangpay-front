@@ -3,7 +3,7 @@ import { useMyNewStore } from "./myStore";
 import { ElMessage } from "element-plus/es";
 function useRequest() {
   const myNewStore = useMyNewStore();
-
+  console.log(myNewStore.base_url);
   const request = axios.create({
     baseURL: myNewStore.base_url,
     timeout: 20000,

@@ -18,6 +18,12 @@
         <template #title> 群组 </template>
       </el-menu-item>
     </RouterLink>
+    <RouterLink to="/wallet">
+      <el-menu-item index="/wallet">
+        <el-icon><Menu /></el-icon>
+        <template #title> 钱包 </template>
+      </el-menu-item>
+    </RouterLink>
     <!-- <RouterLink to="/dish">
       <el-menu-item index="/dish">
         <el-icon><Food /></el-icon>

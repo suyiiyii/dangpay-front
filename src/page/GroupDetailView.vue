@@ -61,10 +61,35 @@
       <el-button type="primary" @click="addAdmin(member.id)"
         >添加为管理员</el-button
       >
+      <!-- 按钮：分配一个群组子钱包 -->
+      <el-button type="primary" @click="createSubWallet(member.id)"
+        >分配一个群组子钱包</el-button
+      >
     </template>
     <h1>邀请用户</h1>
     <el-input v-model="memberId" style="width: 200px"></el-input>
     <el-button type="primary" @click="addMember">邀请</el-button>
+
+    <h1>群组钱包</h1>
+    <h2>主钱包</h2>
+    <el-button type="primary" @click="createGroupWallet"
+      >创建群组钱包</el-button
+    >
+    <template v-for="wallet in wallets">
+      <p>{{ wallet }}</p>
+    </template>
+    <h2>子钱包</h2>
+    <template v-for="subWallet in subWallets">
+      <p>{{ subWallet }}</p>
+      <el-input v-model="subWallet.amount" style="width: 200px"></el-input>
+      <el-button
+        type="primary"
+        @click="
+          allocateSubWallet(wallets[0].id, subWallet.id, subWallet.amount)
+        "
+        >分配</el-button
+      >
+    </template>
   </div>
 </template>
 
@@ -152,4 +177,52 @@ onMounted(() => {
   getGroup();
   getGroupMembers();
 });
+
+const wallets = ref([]);
+const subWallets = ref([]);
+
+const getWallets = () => {
+  request.get("/group/" + groupId + "/wallet").then((res) => {
+    wallets.value = res.data;
+  });
+};
+
+const getSubWallets = () => {
+  request.get("/group/" + groupId + "/subWallet").then((res) => {
+    subWallets.value = res.data;
+  });
+};
+
+onMounted(() => {
+  getWallets();
+  getSubWallets();
+});
+
+const createGroupWallet = () => {
+  request.post("/group/" + groupId + "/wallet").then((res) => {
+    getWallets();
+  });
+};
+
+const createSubWallet = (uid) => {
+  const fatherWalletId = wallets.value[0].id;
+  request
+    .post("/group/" + groupId + "/subWallet", {
+      uid: uid,
+    })
+    .then((res) => {
+      getSubWallets();
+    });
+};
+
+const allocateSubWallet = (fatherWalletId, subWalletId, amount) => {
+  request
+    .post("/wallet/" + fatherWalletId + "/allocate", {
+      id: subWalletId,
+      amount: parseInt(amount),
+    })
+    .then((res) => {
+      getSubWallets();
+    });
+};
 </script>

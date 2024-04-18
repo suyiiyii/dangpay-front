@@ -23,6 +23,11 @@ const routes = [
     name: "GroupDetail",
     component: () => import("./page/GroupDetailView.vue"),
   },
+  {
+    path: "/wallet",
+    name: "Wallet",
+    component: () => import("./page/WalletView.vue"),
+  },
 
   // 其他路由...
 ];
