@@ -20,7 +20,7 @@ const pathSrc = path.resolve(__dirname, "src");
 export default defineConfig({
   build: {
     rollupOptions: {
-      external: ["@element-plus/icons-vue"],
+      external: ["@element-plus/icons-vue", "@vueuse/core"],
     },
   },
   resolve: {
