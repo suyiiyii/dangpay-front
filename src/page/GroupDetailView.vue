@@ -36,9 +36,6 @@
       <!-- 按钮：更新信息 -->
       <el-button type="primary" @click="updateGroup">更新信息</el-button>
 
-      <!-- 按钮：退出群组 -->
-      <el-button type="danger" @click="leaveGroup">退出群组</el-button>
-
       <!-- 按钮：不公开群组 -->
       <el-button type="danger" @click="hideGroup(groupFrom.id)"
         >不公开群组</el-button
@@ -48,6 +45,11 @@
       <el-button type="danger" @click="unhideGroup(groupFrom.id)"
         >公开群组</el-button
       >
+      <br />
+      <hr />
+
+      <!-- 按钮：退出群组 -->
+      <el-button type="danger" @click="leaveGroup">退出群组</el-button>
     </el-form>
 
     <h1>群组成员</h1>
@@ -84,9 +86,7 @@
       <el-input v-model="subWallet.amount" style="width: 200px"></el-input>
       <el-button
         type="primary"
-        @click="
-          allocateSubWallet( subWallet.id, subWallet.amount)
-        "
+        @click="allocateSubWallet(subWallet.id, subWallet.amount)"
         >分配</el-button
       >
     </template>
@@ -205,7 +205,6 @@ const createGroupWallet = () => {
 };
 
 const createSubWallet = (uid) => {
-  const fatherWalletId = wallets.value[0].id;
   request
     .post("/group/" + groupId + "/subWallet", {
       uid: uid,
@@ -215,7 +214,7 @@ const createSubWallet = (uid) => {
     });
 };
 
-const allocateSubWallet = ( subWalletId, amount) => {
+const allocateSubWallet = (subWalletId, amount) => {
   request
     .post("/group/" + groupId + "/allocate", {
       id: subWalletId,
