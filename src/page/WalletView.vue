@@ -16,18 +16,7 @@ import useRequest from "~/request";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const request = useRequest();
-const wallets = ref([
-  {
-    id: 2,
-    amount: 0,
-    amountInFrozen: 0,
-    ownerType: "user",
-    ownerId: 1,
-    isSubWallet: 0,
-    fatherWalletId: 0,
-    lastUpdate: 1713438277,
-  },
-]);
+const wallets = ref([]);
 
 const getMyWallets = () => {
   request.get("/wallet").then((res) => {
