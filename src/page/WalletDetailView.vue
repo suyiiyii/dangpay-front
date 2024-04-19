@@ -19,7 +19,7 @@
     >
     <!-- <QRCodeVue3 :value="qrcode" :key="qrcode" /> -->
     <br />
-    <n-qr-code :value="qrcode" v-if="qrcode" />
+    <n-qr-code :value="qrcode" v-if="qrcode" size="400" />
     <hr />
 
     <h1>扫码</h1>
