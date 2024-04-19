@@ -19,8 +19,8 @@
       </el-menu-item>
     </RouterLink>
     <RouterLink to="/wallet">
-      <el-menu-item index="/wallet">
-        <el-icon><Menu /></el-icon>
+      <el-menu-item index="/wallet"
+        ><el-icon><Wallet /></el-icon>
         <template #title> 钱包 </template>
       </el-menu-item>
     </RouterLink>
