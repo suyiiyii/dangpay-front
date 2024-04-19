@@ -188,7 +188,7 @@ const uploadQrCode = (data) => {
       callbackUrl: data,
     })
     .then((res) => {
-      scanQrCodeServerResponse.value = res;
+      scanQrCodeServerResponse.value = res.data;
       console.log(res);
     });
 };
