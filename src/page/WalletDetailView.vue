@@ -20,11 +20,11 @@
     <!-- <QRCodeVue3 :value="qrcode" :key="qrcode" /> -->
     <br />
     <n-qr-code :value="qrcode" v-if="qrcode" />
-    <h1>扫码</h1>
+    <hr />
 
+    <h1>扫码</h1>
     <main class="reader">
-      <h1>二维码 识别、读取、解码！(Vue3.js版)</h1>
-      <hr />
+      <p>code from <a href="https://github.com/MuGuiLin/QRCode">MuGuiLin</a></p>
 
       <button class="sweep" @click="stream = true">扫一扫</button>
 
@@ -57,6 +57,7 @@
         placeholder="二维码识别结果！"
       ></textarea>
     </main>
+    <p>{{ scanQrCodeServerResponse }}</p>
   </div>
 </template>
 
@@ -145,6 +146,7 @@ const onDecode = (res) => {
   setTimeout(() => {
     result.value = res;
     stream.value = false;
+    uploadQrCode(res);
   }, 600);
 };
 
@@ -178,5 +180,16 @@ const paintBoundingBox = (detectedCodes, ctx) => {
 const onError = (res) => {
   result.value = res;
   stream.value = false;
+};
+const scanQrCodeServerResponse = ref({});
+const uploadQrCode = (data) => {
+  request
+    .post("/wallet/" + walletId.value + "/scanQRCode", {
+      callbackUrl: data,
+    })
+    .then((res) => {
+      scanQrCodeServerResponse.value = res;
+      console.log(res);
+    });
 };
 </script>
