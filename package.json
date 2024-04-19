@@ -15,8 +15,11 @@
     "axios": "^1.6.8",
     "element-plus": "^2.6.2",
     "pinia": "^2.1.7",
+    "qrcode-vue3": "^1.6.8",
     "vue": "^3.4.21",
-    "vue-router": "4"
+    "vue-qrcode-reader": "^5.5.3",
+    "vue-router": "4",
+    "vue3-qr-reader": "^1.0.0"
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.15",
