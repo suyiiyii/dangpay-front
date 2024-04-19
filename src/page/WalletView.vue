@@ -5,7 +5,7 @@
     >
     <h1>我的钱包</h1>
     <template v-for="wallet in wallets">
-      <p>{{ wallet }}</p>
+      <p @click="router.push(`/wallet/${wallet.id}`)">{{ wallet }}</p>
     </template>
   </div>
 </template>

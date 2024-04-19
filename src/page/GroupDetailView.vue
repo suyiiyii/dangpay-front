@@ -85,7 +85,7 @@
       <el-button
         type="primary"
         @click="
-          allocateSubWallet(wallets[0].id, subWallet.id, subWallet.amount)
+          allocateSubWallet( subWallet.id, subWallet.amount)
         "
         >分配</el-button
       >
@@ -215,9 +215,9 @@ const createSubWallet = (uid) => {
     });
 };
 
-const allocateSubWallet = (fatherWalletId, subWalletId, amount) => {
+const allocateSubWallet = ( subWalletId, amount) => {
   request
-    .post("/wallet/" + fatherWalletId + "/allocate", {
+    .post("/group/" + groupId + "/allocate", {
       id: subWalletId,
       amount: parseInt(amount),
     })
