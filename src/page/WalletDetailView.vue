@@ -17,7 +17,9 @@
     <el-button type="primary" @click="createMoneyReceiveCode(amount)"
       >生成收款码</el-button
     >
-    <QRCodeVue3 :value="qrcode" :key="qrcode" />
+    <!-- <QRCodeVue3 :value="qrcode" :key="qrcode" /> -->
+    <br />
+    <n-qr-code :value="qrcode" v-if="qrcode" />
     <h1>扫码</h1>
 
     <main class="reader">
@@ -63,8 +65,8 @@ import QRCodeVue3 from "qrcode-vue3";
 import { onMounted, ref, reactive } from "vue";
 import useRequest from "~/request";
 import { useRouter } from "vue-router";
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 import { QrStream, QrCapture } from "vue3-qr-reader";
+import { NQrCode } from "naive-ui";
 const router = useRouter();
 const request = useRequest();
 const walletId = ref(router.currentRoute.value.params.id);
@@ -108,8 +110,6 @@ const stream = ref(false); // 显示扫一扫相机
 const torch = ref(false); // 是否开启闪光灯
 const camera = ref("rear"); // rear（后置摄像头[默认]） | front（前置摄像头）
 const capture = ref(false); // environment（后置摄像头[默认]） | user（前置摄像头） | false（相册[图片库]）
-
-
 
 // const audio = new Audio(tone);
 
