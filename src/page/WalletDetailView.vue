@@ -221,6 +221,12 @@ const confirmPay = () => {
     })
     .then((res) => {
       console.log(res);
+      dialogVisible.value = false;
+      ElMessage.success("支付成功");
+    })
+    .catch((err) => {
+      dialogVisible.value = false;
+      ElMessage.error(err.response.data);
     });
 };
 </script>
