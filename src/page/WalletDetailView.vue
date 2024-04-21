@@ -58,6 +58,21 @@
       ></textarea>
     </main>
     <p>{{ scanQrCodeServerResponse }}</p>
+    <el-dialog v-model="dialogVisible" title="确认支付" width="500">
+      <p>{{ scanQrCodeServerResponse }}</p>
+      <p>支付码：{{ scanQrCodeServerResponse.code }}</p>
+      <p>第三方平台：{{ scanQrCodeServerResponse.platform }}</p>
+      <p>支付金额：{{ scanQrCodeServerResponse.specifiedAmount }}</p>
+      <p>支付信息：{{ scanQrCodeServerResponse.message }}</p>
+      <el-input
+        v-model="password"
+        type="password"
+        placeholder="请输入支付密码"
+      ></el-input>
+      <el-button type="primary" @click="confirmPay">确认</el-button>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <!-- { "code": "/GryBWBhGrFJLcLvq6pKcBK9RFTK+ii667VK1+NK+M2qAJQ7EqqpDIMb5kVcZUyR", "message": "向 dangpay 平台的 30005 转账 101 元", "platform": "dangpay", "isAmountSpecified": true, "specifiedAmount": 101, "expiredAt": 1713672506, "requestId": "f2788bee-4075-4cf9-a492-669fdcd833f6", "amountSpecified": true } -->
+    </el-dialog>
   </div>
 </template>
 
@@ -95,7 +110,7 @@ const amount = ref(10);
 const createMoneyReceiveCode = (amount) => {
   request
     .post(`/wallet/${walletId.value}/createReceiveIdentity`, {
-      isSpecifiedAmount: true,
+      isAmountSpecified: true,
       amount: amount,
       description: "test",
     })
@@ -189,6 +204,22 @@ const uploadQrCode = (data) => {
     })
     .then((res) => {
       scanQrCodeServerResponse.value = res.data;
+      console.log(res);
+      dialogVisible.value = true;
+    });
+};
+
+const dialogVisible = ref(false);
+const password = ref("");
+
+const confirmPay = () => {
+  request
+    .post("/wallet/" + walletId.value + "/pay", {
+      code: scanQrCodeServerResponse.value.code,
+      password: password.value,
+      requestId: scanQrCodeServerResponse.value.requestId,
+    })
+    .then((res) => {
       console.log(res);
     });
 };
