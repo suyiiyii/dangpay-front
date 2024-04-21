@@ -231,7 +231,7 @@ const confirmPay = () => {
     })
     .catch((err) => {
       // dialogVisible.value = false;
-      ElMessage.error(err.response.data);
+      // ElMessage.error(err.response.data);
     });
 };
 </script>
