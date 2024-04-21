@@ -22,6 +22,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <title>{{ platform }}</title>
   <el-menu class="el-menu-demo" mode="horizontal" default-active="1">
     <el-menu-item index="1">
       <h3>欢迎使用 {{ platform }}</h3>
