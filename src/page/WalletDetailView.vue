@@ -56,6 +56,8 @@
         v-model="result"
         placeholder="二维码识别结果！"
       ></textarea>
+      <!-- 手动提交扫码信息给后端按钮 -->
+      <el-button @click="uploadQrCode(result)">手动提交扫码信息</el-button>
     </main>
     <p>{{ scanQrCodeServerResponse }}</p>
     <el-dialog v-model="dialogVisible" title="确认支付" width="500">
@@ -83,6 +85,7 @@ import useRequest from "~/request";
 import { useRouter } from "vue-router";
 import { QrStream, QrCapture } from "vue3-qr-reader";
 import { NQrCode } from "naive-ui";
+import { ElMessage } from "element-plus/es";
 const router = useRouter();
 const request = useRequest();
 const walletId = ref(router.currentRoute.value.params.id);
@@ -213,19 +216,21 @@ const dialogVisible = ref(false);
 const password = ref("");
 
 const confirmPay = () => {
+  const password1 = password.value;
+  password.value = "";
   request
     .post("/wallet/" + walletId.value + "/pay", {
       code: scanQrCodeServerResponse.value.code,
-      password: password.value,
+      password: password1,
       requestId: scanQrCodeServerResponse.value.requestId,
     })
     .then((res) => {
       console.log(res);
-      dialogVisible.value = false;
+      // dialogVisible.value = false;
       ElMessage.success("支付成功");
     })
     .catch((err) => {
-      dialogVisible.value = false;
+      // dialogVisible.value = false;
       ElMessage.error(err.response.data);
     });
 };
