@@ -3,12 +3,14 @@ import { toggleDark } from "~/composables";
 
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import useRequest from "~/request";
+const request = useRequest();
 const platform = ref("dangpay");
 const updatePlatform = () => {
   if (localStorage.getItem("platform")) {
     platform.value = localStorage.getItem("platform");
   } else {
-    axios.get("/health").then((res) => {
+    request.get("/health").then((res) => {
       platform.value = res.data.platform;
       localStorage.setItem("platform", platform.value);
     });
