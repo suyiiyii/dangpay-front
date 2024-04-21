@@ -1,10 +1,29 @@
 <script lang="ts" setup>
 import { toggleDark } from "~/composables";
+
+import { ref, onMounted } from "vue";
+import axios from "axios";
+const platform = ref("dangpay");
+const updatePlatform = () => {
+  if (localStorage.getItem("platform")) {
+    platform.value = localStorage.getItem("platform");
+  } else {
+    axios.get("/health").then((res) => {
+      platform.value = res.data.platform;
+      localStorage.setItem("platform", platform.value);
+    });
+  }
+};
+onMounted(() => {
+  updatePlatform();
+});
 </script>
 
 <template>
   <el-menu class="el-menu-demo" mode="horizontal" default-active="1">
-    <el-menu-item index="1">DangPay</el-menu-item>
+    <el-menu-item index="1">
+      <h3>欢迎使用 {{ platform }}</h3>
+    </el-menu-item>
     <!-- <el-menu-item index="1">Element Plus</el-menu-item> -->
     <!-- <el-sub-menu index="2">
       <template #title>Workspace</template>
