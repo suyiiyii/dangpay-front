@@ -1,30 +1,48 @@
 <template>
   <section>
     <h1>消息</h1>
-    <div style="display: flex; flex-direction: row">
-      <div style="height: 400px">
+    <div style="display: flex; flex-direction: row; height: 50vh">
+      <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.15)">
         <el-scrollbar style="height: 100%; width: 100%; overflow-y: auto">
-          <el-card
-            v-for="friend in friends"
-            :key="friend.id"
-            class="scrollbar-demo-item"
-            @click="changeFriend(friend)"
-          >
-            <h2>{{ friend.username }}</h2>
-          </el-card>
+          <el-switch
+            v-model="isGroup"
+            size="large"
+            active-text="群组"
+            inactive-text="个人"
+          />
+          <template v-if="!isGroup">
+            <el-card
+              v-for="friend in friends"
+              :key="friend.id"
+              class="scrollbar-demo-item"
+              @click="changeFriend(friend)"
+            >
+              <h2>{{ friend.username }}</h2>
+            </el-card>
 
-          <el-card>
-            <el-input
-              v-model="newFriendId"
-              placeholder="请输入好友id"
-              clearable
-            ></el-input>
-            <el-button @click="addFriend(newFriendId)">添加好友</el-button>
-          </el-card>
+            <el-card>
+              <el-input
+                v-model="newFriendId"
+                placeholder="请输入好友id"
+                clearable
+              ></el-input>
+              <el-button @click="addFriend(newFriendId)">添加好友</el-button>
+            </el-card>
+          </template>
+          <template v-else>
+            <el-card
+              v-for="group in groups"
+              :key="group.id"
+              class="scrollbar-demo-item"
+              @click="changeGroup(group)"
+            >
+              <h2>{{ group.name }}</h2>
+            </el-card>
+          </template>
         </el-scrollbar>
       </div>
       <!-- 聊天消息对话框 (仿微信)-->
-      <div style="flex: 1; height: 400px">
+      <div>
         <el-scrollbar
           ref="scrollContainer"
           style="height: 100%; width: 480px; overflow-y: auto"
@@ -32,12 +50,19 @@
           <template v-for="message in messages">
             <div
               :class="
-                message.senderId === curentFriend.uid
-                  ? 'message-left'
-                  : 'message-right'
+                message.senderId === userId
+                  ? 'message-right'
+                  : 'message-left'
               "
             >
-              <div class="message-bubble">
+              <div
+                class="message-bubble"
+                :class="
+                  message.senderId === userId
+                    ? 'my-message'
+                    : 'other-message'
+                "
+              >
                 {{ message.content }}
                 <div class="message-time">{{ message.time }}</div>
               </div>
@@ -60,17 +85,31 @@
 <script setup>
 import { ref, onMounted, nextTick, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 import useRequest from "~/request";
-const request = useRequest();
+import { useMyNewStore } from "~/myStore";
 
+const request = useRequest();
+const myStore = useMyNewStore();
+const userId= myStore.getUserId();
 const friends = ref([]);
+const isGroup = ref(false);
 
 const getFriends = async () => {
   const res = await request.get("/friend");
   friends.value = res.data;
 };
+
+const groups = ref([]);
+
+const getGroups = async () => {
+  const res = await request.get("/group/my");
+  groups.value = res.data;
+};
+
 onMounted(() => {
   getFriends();
+  getGroups();
 });
 const curentFriend = ref(null);
 const chatType = ref("friend");
@@ -92,13 +131,24 @@ const message = ref("");
 const scrollAnchor = ref(null);
 
 const newFriendId = ref("");
+
 const changeFriend = (friend) => {
   curentFriend.value = friend;
   chatType.value = "friend";
   getMessage();
-  console.log(messages.value);
+  clearInterval(intervalId.value);
+  intervalId.value = setInterval(getMessage, 3000);
 };
 
+const currentGroupId = ref(null);
+const changeGroup = (group) => {
+  const groupId = group.id;
+  currentGroupId.value = groupId;
+  chatType.value = "group";
+  getMessage();
+  clearInterval(intervalId.value);
+  intervalId.value = setInterval(getMessage, 3000);
+};
 const addFriend = async (newFriendId) => {
   await request.post("/friend", {
     uid: newFriendId,
@@ -117,8 +167,9 @@ const getMessage = async () => {
   if (chatType.value === "friend") {
     messages.value = await getFriendMessages(curentFriend.value.uid);
   } else {
-    messages.value = await getGroupMessages(curentFriend.value.uid);
+    messages.value = await getGroupMessages(currentGroupId.value);
   }
+  console.log(messages.value);
   scroll();
 };
 const sendMessage = async () => {
@@ -131,7 +182,7 @@ const sendMessage = async () => {
       message: message.value,
     });
   } else {
-    await request.post(`/group/${curentFriend.value.uid}/message`, {
+    await request.post(`/group/${currentGroupId.value}/message`, {
       message: message.value,
     });
   }
@@ -146,9 +197,7 @@ const scroll = () => {
 };
 
 const intervalId = ref(null);
-onMounted(() => {
-  intervalId.value = setInterval(getMessage, 3000);
-});
+onMounted(() => {});
 onUnmounted(() => {
   clearInterval(intervalId.value);
 });
@@ -174,6 +223,7 @@ onUnmounted(() => {
   border-radius: 10px;
   margin: 10px;
   background-color: #f0f0f0;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .message-right {
@@ -182,5 +232,13 @@ onUnmounted(() => {
 
 .message-left {
   text-align: left;
+}
+
+.my-message {
+  background-color: #89d961;
+}
+
+.other-message {
+  background-color: #f0f0f0;
 }
 </style>
