@@ -21,6 +21,25 @@ export const useMyNewStore = defineStore("myNewStore", {
       ); //解析，需要吧‘_’,'-'进行转换否则会无法解析
       const data = JSON.parse(userinfo.sub);
       return data.uid;
-    }
+    },
+    async getRole() {
+      const request = useRequest();
+      const userId = this.getUserId();
+      if (userId == null) {
+        return null;
+      }
+      const response = await request.get(`${this.base_url}/user/myRole`);
+      const res: string[] = response.data.roles;
+      console.log(res);
+      return res;
+    },
+    async amIAdmin() {
+      const roles = await this.getRole();
+      if (roles == null) {
+        return false;
+      }
+      // 判断roles 里面 有没有 admin 或 superadmin
+      return roles.includes("admin") || roles.includes("superadmin");
+    },
   },
 });

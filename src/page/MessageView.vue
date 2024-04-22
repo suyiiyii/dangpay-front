@@ -50,17 +50,13 @@
           <template v-for="message in messages">
             <div
               :class="
-                message.senderId === userId
-                  ? 'message-right'
-                  : 'message-left'
+                message.senderId === userId ? 'message-right' : 'message-left'
               "
             >
               <div
                 class="message-bubble"
                 :class="
-                  message.senderId === userId
-                    ? 'my-message'
-                    : 'other-message'
+                  message.senderId === userId ? 'my-message' : 'other-message'
                 "
               >
                 {{ message.content }}
@@ -91,9 +87,11 @@ import { useMyNewStore } from "~/myStore";
 
 const request = useRequest();
 const myStore = useMyNewStore();
-const userId= myStore.getUserId();
+const userId = myStore.getUserId();
 const friends = ref([]);
 const isGroup = ref(false);
+
+console.log( myStore.getRole());
 
 const getFriends = async () => {
   const res = await request.get("/friend");

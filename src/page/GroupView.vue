@@ -3,7 +3,11 @@
     <h1>群组列表</h1>
     <template v-for="group in groups">
       <p
-        @click="router.push({ name: 'GroupDetail', params: { id: group.id } })"
+        @click="
+          amIAdmin
+            ? router.push({ name: 'GroupDetail', params: { id: group.id } })
+            : null
+        "
       >
         {{ group }}
       </p>
@@ -11,12 +15,14 @@
       <el-button type="primary" @click="joinGroup(group.id)"
         >加入群组</el-button
       >
-      <!-- ban群组按钮 -->
-      <el-button type="danger" @click="banGroup(group.id)">ban群组</el-button>
-      <!-- unban群组按钮 -->
-      <el-button type="danger" @click="unbanGroup(group.id)"
-        >unban群组</el-button
-      >
+      <template v-if="amIAdmin">
+        <!-- ban群组按钮 -->
+        <el-button type="danger" @click="banGroup(group.id)">ban群组</el-button>
+        <!-- unban群组按钮 -->
+        <el-button type="danger" @click="unbanGroup(group.id)"
+          >unban群组</el-button
+        >
+      </template>
       <hr />
     </template>
     <h1>创建群组</h1>
@@ -72,6 +78,8 @@ import { onMounted, ref } from "vue";
 import useRequest from "~/request";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
+import { useMyNewStore } from "~/myStore";
+const myStore = useMyNewStore();
 const router = useRouter();
 const request = useRequest();
 const groups = ref([]);
@@ -125,8 +133,13 @@ const unbanGroup = (groupId) => {
   });
 };
 
+const amIAdmin = ref(false);
+
 onMounted(() => {
   getGroups();
   getMyGroups();
+  myStore.amIAdmin().then((res) => {
+    amIAdmin.value = res.data;
+  });
 });
 </script>
