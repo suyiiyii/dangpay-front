@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import useRequest from "~/request";
 const request = useRequest();
@@ -144,6 +144,14 @@ const scroll = () => {
     scrollAnchor.value.scrollIntoView();
   });
 };
+
+const intervalId = ref(null);
+onMounted(() => {
+  intervalId.value = setInterval(getMessage, 3000);
+});
+onUnmounted(() => {
+  clearInterval(intervalId.value);
+});
 </script>
 
 <style scoped>
