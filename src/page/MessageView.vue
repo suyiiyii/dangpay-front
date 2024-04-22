@@ -16,7 +16,10 @@
       </div>
       <!-- 聊天消息对话框 (仿微信)-->
       <div style="flex: 1; height: 400px">
-        <el-scrollbar style="height: 100%; width: 480px; overflow-y: auto">
+        <el-scrollbar
+          ref="scrollContainer"
+          style="height: 100%; width: 480px; overflow-y: auto"
+        >
           <template v-for="message in messages">
             <div
               :class="
@@ -31,6 +34,7 @@
               </div>
             </div>
           </template>
+          <div ref="scrollAnchor"></div>
         </el-scrollbar>
         <el-input
           v-model="message"
@@ -45,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage, ElButton, ElScrollbar } from "element-plus";
 import useRequest from "~/request";
@@ -63,7 +67,21 @@ onMounted(() => {
 const curentFriend = ref(null);
 const chatType = ref("friend");
 const messages = ref([]);
+/*
+{
+  "id": 1,
+  "senderId": 12,
+  "receiverId": 13,
+  "groupId": 0,
+  "type": "text",
+  "content": "fjsodif",
+  "callback": null,
+  "status": "normal",
+  "createTime": 1713778958
+}
+*/
 const message = ref("");
+const scrollAnchor = ref(null);
 
 const changeFriend = (friend) => {
   curentFriend.value = friend;
@@ -85,6 +103,7 @@ const getMessage = async () => {
   } else {
     messages.value = await getGroupMessages(curentFriend.value.uid);
   }
+  scroll();
 };
 const sendMessage = async () => {
   if (message.value === "") {
@@ -101,7 +120,13 @@ const sendMessage = async () => {
     });
   }
   message.value = "";
-  getMessage();
+  await getMessage();
+};
+
+const scroll = () => {
+  nextTick(() => {
+    scrollAnchor.value.scrollIntoView();
+  });
 };
 </script>
 
