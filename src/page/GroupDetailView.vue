@@ -8,10 +8,10 @@
         <el-input v-model="groupFrom.name"></el-input>
       </el-form-item>
 
-      <!-- 表单项：pepoleCount -->
+      <!-- 表单项：pepoleCount
       <el-form-item label="人数：">
         <el-input v-model="groupFrom.pepoleCount"></el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <!-- 表单项：enterpriseScale -->
       <el-form-item label="企业规模：">
