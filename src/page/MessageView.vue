@@ -12,6 +12,15 @@
           >
             <h2>{{ friend.username }}</h2>
           </el-card>
+
+          <el-card>
+            <el-input
+              v-model="newFriendId"
+              placeholder="请输入好友id"
+              clearable
+            ></el-input>
+            <el-button @click="addFriend(newFriendId)">添加好友</el-button>
+          </el-card>
         </el-scrollbar>
       </div>
       <!-- 聊天消息对话框 (仿微信)-->
@@ -51,7 +60,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import { ElMessage, ElButton, ElScrollbar } from "element-plus";
 import useRequest from "~/request";
 const request = useRequest();
 
@@ -83,11 +91,19 @@ const messages = ref([]);
 const message = ref("");
 const scrollAnchor = ref(null);
 
+const newFriendId = ref("");
 const changeFriend = (friend) => {
   curentFriend.value = friend;
   chatType.value = "friend";
   getMessage();
   console.log(messages.value);
+};
+
+const addFriend = async (newFriendId) => {
+  await request.post("/friend", {
+    uid: newFriendId,
+  });
+  await getFriends();
 };
 
 const getFriendMessages = async (uid) => {
