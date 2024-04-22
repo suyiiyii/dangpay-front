@@ -26,14 +26,12 @@
               <h2>{{ friend.username }}</h2>
             </el-card>
 
-            <el-card>
-              <el-input
-                v-model="newFriendId"
-                placeholder="请输入好友id"
-                clearable
-              ></el-input>
-              <el-button @click="addFriend(newFriendId)">添加好友</el-button>
-            </el-card>
+            <el-input
+              v-model="newFriendId"
+              placeholder="请输入好友id"
+              clearable
+            ></el-input>
+            <el-button @click="addFriend(newFriendId)">添加好友</el-button>
           </template>
           <template v-else>
             <el-card
@@ -181,7 +179,6 @@ const getMessage = async () => {
     messages.value = await getGroupMessages(currentGroupId.value);
   }
   console.log(messages.value);
-  scroll();
 };
 const sendMessage = async () => {
   if (message.value === "") {
@@ -199,6 +196,7 @@ const sendMessage = async () => {
   }
   message.value = "";
   await getMessage();
+  scroll();
 };
 
 const scroll = () => {
