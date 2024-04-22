@@ -2,8 +2,14 @@
   <section>
     <h1>消息</h1>
     <div style="display: flex; flex-direction: row; height: 50vh">
-      <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.15)">
-        <el-scrollbar style="height: 100%; width: 100%; overflow-y: auto">
+      <div
+        style="
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+          min-width: 100px;
+          max-width: 300px;
+        "
+      >
+        <el-scrollbar style="height: 100%; min-width: 100%; overflow-y: auto">
           <el-switch
             v-model="isGroup"
             size="large"
@@ -45,7 +51,14 @@
       <div>
         <el-scrollbar
           ref="scrollContainer"
-          style="height: 100%; width: 480px; overflow-y: auto"
+          style="
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            max-width: 680px;
+            width: 50vw;
+          "
         >
           <template v-for="message in messages">
             <div
@@ -91,7 +104,7 @@ const userId = myStore.getUserId();
 const friends = ref([]);
 const isGroup = ref(false);
 
-console.log( myStore.getRole());
+console.log(myStore.getRole());
 
 const getFriends = async () => {
   const res = await request.get("/friend");
