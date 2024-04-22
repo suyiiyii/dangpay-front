@@ -3,7 +3,12 @@
     <BaseHeader />
     <div class="flex main-container">
       <BaseSide />
-      <router-view />
+
+      <div style="height: 100%; width: 100%">
+        <div class="column">
+          <router-view />
+        </div>
+      </div>
       <!-- <div w="full" py="4">
         <Logos my="4" />
         <HelloWorld msg="Hello Vue 3 + Element Plus + Vite" />
@@ -20,5 +25,11 @@
 
 .main-container {
   height: calc(100vh - var(--ep-menu-item-height) - 3px);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

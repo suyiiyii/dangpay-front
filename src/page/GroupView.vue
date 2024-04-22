@@ -1,76 +1,80 @@
 <template>
-  <div class="group-view">
-    <h1>群组列表</h1>
-    <template v-for="group in groups">
-      <p
-        @click="
-          amIAdmin
-            ? router.push({ name: 'GroupDetail', params: { id: group.id } })
-            : null
-        "
-      >
-        {{ group }}
-      </p>
-      <!-- 加入群组按钮 -->
-      <el-button type="primary" @click="joinGroup(group.id)"
-        >加入群组</el-button
-      >
-      <template v-if="amIAdmin">
-        <!-- ban群组按钮 -->
-        <el-button type="danger" @click="banGroup(group.id)">ban群组</el-button>
-        <!-- unban群组按钮 -->
-        <el-button type="danger" @click="unbanGroup(group.id)"
-          >unban群组</el-button
+      <h1>群组列表</h1>
+      <template v-for="group in groups">
+        <p
+          @click="
+            amIAdmin
+              ? router.push({ name: 'GroupDetail', params: { id: group.id } })
+              : null
+          "
         >
+          <group-card :data="group" />
+          <!-- {{ group }} -->
+        </p>
+        <!-- 加入群组按钮 -->
+        <el-button type="primary" @click="joinGroup(group.id)"
+          >加入群组</el-button
+        >
+        <template v-if="amIAdmin">
+          <!-- ban群组按钮 -->
+          <el-button type="danger" @click="banGroup(group.id)"
+            >ban群组</el-button
+          >
+          <!-- unban群组按钮 -->
+          <el-button type="danger" @click="unbanGroup(group.id)"
+            >unban群组</el-button
+          >
+        </template>
+        <hr />
       </template>
-      <hr />
-    </template>
-    <h1>创建群组</h1>
+      <h1>创建群组</h1>
 
-    <el-form :model="groupFrom">
-      <!-- 表单项：name -->
-      <el-form-item label="名称：">
-        <el-input v-model="groupFrom.name"></el-input>
-      </el-form-item>
+      <el-form :model="groupFrom">
+        <!-- 表单项：name -->
+        <el-form-item label="名称：">
+          <el-input v-model="groupFrom.name"></el-input>
+        </el-form-item>
 
-      <!-- 表单项：pepoleCount
+        <!-- 表单项：pepoleCount
       <el-form-item label="人数：">
         <el-input v-model="groupFrom.pepoleCount"></el-input>
       </el-form-item> -->
 
-      <!-- 表单项：enterpriseScale -->
-      <el-form-item label="企业规模：">
-        <el-input v-model="groupFrom.enterpriseScale"></el-input>
-      </el-form-item>
+        <!-- 表单项：enterpriseScale -->
+        <el-form-item label="企业规模：">
+          <el-input v-model="groupFrom.enterpriseScale"></el-input>
+        </el-form-item>
 
-      <!-- 表单项：industry -->
-      <el-form-item label="行业：">
-        <el-input v-model="groupFrom.industry"></el-input>
-      </el-form-item>
+        <!-- 表单项：industry -->
+        <el-form-item label="行业：">
+          <el-input v-model="groupFrom.industry"></el-input>
+        </el-form-item>
 
-      <!-- 表单项：address -->
-      <el-form-item label="地址：">
-        <el-input v-model="groupFrom.address"></el-input>
-      </el-form-item>
+        <!-- 表单项：address -->
+        <el-form-item label="地址：">
+          <el-input v-model="groupFrom.address"></el-input>
+        </el-form-item>
 
-      <!-- 表单项：contact -->
-      <el-form-item label="联系方式：">
-        <el-input v-model="groupFrom.contact"></el-input>
-      </el-form-item>
+        <!-- 表单项：contact -->
+        <el-form-item label="联系方式：">
+          <el-input v-model="groupFrom.contact"></el-input>
+        </el-form-item>
 
-      <!-- 按钮：更新信息 -->
-      <el-button type="primary" @click="createGroup">创建群组</el-button>
-    </el-form>
+        <!-- 按钮：更新信息 -->
+        <el-button type="primary" @click="createGroup">创建群组</el-button>
+      </el-form>
 
-    <h1>我的群组</h1>
-    <template v-for="group in myGroups">
-      <p
-        @click="router.push({ name: 'GroupDetail', params: { id: group.id } })"
-      >
-        {{ group }}
-      </p>
-    </template>
-  </div>
+      <h1>我的群组</h1>
+      <template v-for="group in myGroups">
+        <p
+          @click="
+            router.push({ name: 'GroupDetail', params: { id: group.id } })
+          "
+        >
+          <group-card :data="group" />
+          <!-- {{ group }} -->
+        </p>
+      </template>
 </template>
 
 <script setup>
@@ -143,3 +147,6 @@ onMounted(() => {
   });
 });
 </script>
+
+<style scoped>
+</style>
