@@ -28,8 +28,8 @@ RUN --mount=type=cache,target=/root/.npm \
 # Leverage bind mounts to package.json and pnpm-lock.yaml to avoid having to copy them
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
-    --mount=type=cache,target=/root/.local/share/pnpm/store \
+    # --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
+    # --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm install
 
 
