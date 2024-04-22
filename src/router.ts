@@ -32,7 +32,12 @@ const routes = [
     path: "/wallet/:id",
     name: "WalletDetail",
     component: () => import("./page/WalletDetailView.vue"),
-  }
+  },
+  {
+    path: "/message",
+    name: "Message",
+    component: () => import("./page/MessageView.vue"),
+  },
 
   // 其他路由...
 ];

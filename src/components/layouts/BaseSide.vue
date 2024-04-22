@@ -24,6 +24,12 @@
         <template #title> 钱包 </template>
       </el-menu-item>
     </RouterLink>
+    <RouterLink to="/message">
+      <el-menu-item index="/message"
+        ><el-icon><ChatDotSquare /></el-icon>
+        <template #title> 私聊 </template>
+      </el-menu-item>
+    </RouterLink>
     <!-- <RouterLink to="/dish">
       <el-menu-item index="/dish">
         <el-icon><Food /></el-icon>
