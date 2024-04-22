@@ -45,6 +45,8 @@
       <el-button type="danger" @click="unhideGroup(groupFrom.id)"
         >公开群组</el-button
       >
+      <!-- 按钮：解散群组 -->
+      <el-button type="danger" @click="destroyGroup">解散群组</el-button>
       <br />
       <hr />
 
@@ -66,6 +68,10 @@
       <!-- 按钮：分配一个群组子钱包 -->
       <el-button type="primary" @click="createSubWallet(member.id)"
         >分配一个群组子钱包</el-button
+      >
+      <!-- 按钮：转让群主 -->
+      <el-button type="primary" @click="transferCreator(member.id)"
+        >转让群主</el-button
       >
     </template>
     <h1>邀请用户</h1>
@@ -223,5 +229,22 @@ const allocateSubWallet = (subWalletId, amount) => {
     .then((res) => {
       getSubWallets();
     });
+};
+
+const transferCreator = (uid) => {
+  request
+    .post("/group/" + groupId + "/transferCreator", {
+      uid: uid,
+    })
+    .then((res) => {
+      ElMessage.success("转让成功");
+    });
+};
+
+const destroyGroup = () => {
+  request.delete("/group/" + groupId).then((res) => {
+    ElMessage.success("解散成功");
+    router.push({ name: "Group" });
+  });
 };
 </script>
