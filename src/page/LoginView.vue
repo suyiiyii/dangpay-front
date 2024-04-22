@@ -208,6 +208,7 @@ const changePassword = () => {
 
 onMounted(() => {
   userData.value.id = getUid();
+  getUserInfo(userData.value.id);
 });
 /*
 用户信息模板
