@@ -76,9 +76,9 @@
       <el-form-item label="用户名：">
         <el-input v-model="userData.username"
       /></el-form-item>
-      <el-form-item label="密码：">
+      <!-- <el-form-item label="密码：">
         <el-input v-model="userData.password"
-      /></el-form-item>
+      /></el-form-item> -->
       <el-form-item label="手机号：">
         <el-input v-model="userData.phone"
       /></el-form-item>
