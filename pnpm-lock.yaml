@@ -15,7 +15,7 @@ dependencies:
     specifier: ^1.6.8
     version: 1.6.8
   element-plus:
-    specifier: ^2.6.2
+    specifier: ^2.7.0
     version: 2.7.0(vue@3.4.21)
   pinia:
     specifier: ^2.1.7
