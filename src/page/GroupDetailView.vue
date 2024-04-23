@@ -85,7 +85,9 @@
     <template v-if="amIAdmin">
       <h1>邀请用户</h1>
       <el-input v-model="memberId" style="width: 200px"></el-input>
-      <el-button type="primary" @click="addMember">邀请</el-button>
+      <el-button type="primary" @click="dialogTableVisible = true"
+        >邀请</el-button
+      >
       <h1>群组钱包</h1>
       <h2>主钱包</h2>
       <el-button type="primary" @click="createGroupWallet"
@@ -106,6 +108,14 @@
       </template>
     </template>
   </div>
+  <el-dialog v-model="dialogTableVisible" title="邀请入群" width="400">
+    <el-form>
+      <el-form-item label="原因">
+        <el-input v-model="reason"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="addMember()"> 加入 </el-button>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -181,14 +191,25 @@ const addAdmin = (memberId) => {
 };
 
 const memberId = ref("");
+
+const reason = ref("");
+const dialogTableVisible = ref(false);
 const addMember = () => {
   request
-    .post("/group/" + groupId + "/invite", {
-      uid: memberId.value,
-    })
+    .post(
+      "/group/" + groupId + "/invite",
+      {
+        uid: memberId.value,
+      },
+      {
+        headers: {
+          "X-Reason": reason.value || "无",
+        },
+      }
+    )
     .then((res) => {
       ElMessage.success("邀请成功");
-      getGroupMembers();
+      // getGroupMembers();
     });
 };
 onMounted(() => {

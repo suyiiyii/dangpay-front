@@ -175,7 +175,7 @@ const changeFriend = (friend) => {
   chatType.value = "friend";
   getMessage();
   clearInterval(intervalId.value);
-  // intervalId.value = setInterval(getMessage, 3000);
+  intervalId.value = setInterval(getMessage, 3000);
 };
 
 const currentGroupId = ref(null);
@@ -185,7 +185,7 @@ const changeGroup = (group) => {
   chatType.value = "group";
   getMessage();
   clearInterval(intervalId.value);
-  // intervalId.value = setInterval(getMessage, 3000);
+  intervalId.value = setInterval(getMessage, 3000);
 };
 const applicantDialogVisible = ref(false);
 
