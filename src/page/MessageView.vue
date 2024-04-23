@@ -101,9 +101,7 @@
       <el-form-item label="原因">
         <el-input v-model="approveRequest.reason"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="sentApproval()">
-        发送
-      </el-button>
+      <el-button type="primary" @click="sentApproval()"> 发送 </el-button>
     </el-form>
   </el-dialog>
 </template>
@@ -235,6 +233,10 @@ const currentMsg = ref(null);
 const clickMsg = (msg) => {
   console.log(msg);
   if (msg.callback === null || msg.callback === "") {
+    return;
+  }
+  if (msg.status !== "normal") {
+    ElMessage.warning("消息已处理，状态：" + msg.status);
     return;
   }
   currentMsg.value = msg;

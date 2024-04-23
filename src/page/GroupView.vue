@@ -24,17 +24,6 @@
       >
     </template>
 
-    <el-dialog v-model="dialogTableVisible" title="申请入群" width="400">
-      <el-form>
-        <el-form-item label="原因">
-          <el-input v-model="reason"></el-input>
-        </el-form-item>
-        <el-button type="primary" @click="joinGroup(currentGroupId)">
-          加入
-        </el-button>
-      </el-form>
-    </el-dialog>
-
     <hr />
   </template>
   <h1>创建群组</h1>
@@ -81,6 +70,16 @@
       <!-- {{ group }} -->
     </p>
   </template>
+  <el-dialog v-model="dialogTableVisible" title="申请入群" width="400">
+      <el-form>
+        <el-form-item label="原因">
+          <el-input v-model="reason"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="joinGroup(currentGroupId)">
+          加入
+        </el-button>
+      </el-form>
+    </el-dialog>
 </template>
 
 <script setup>
@@ -141,7 +140,7 @@ const joinGroup = (groupId) => {
       }
     )
     .then((res) => {
-      ElMessage.success("加入成功");
+      ElMessage.success("申请成功");
       getMyGroups();
     });
 };
