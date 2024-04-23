@@ -28,7 +28,7 @@ export const useMyNewStore = defineStore("myNewStore", {
       if (userId == null) {
         return null;
       }
-      const response = await request.get(`${this.base_url}/user/myRole`);
+      const response = await request.get(`/user/myRole`);
       const res: string[] = response.data.roles;
       console.log(res);
       return res;
