@@ -31,7 +31,9 @@
               placeholder="请输入好友id"
               clearable
             ></el-input>
-            <el-button @click="addFriend(newFriendId)">添加好友</el-button>
+            <el-button @click="appllicantAddFriend(newFriendId)"
+              >添加好友</el-button
+            >
           </template>
           <template v-else>
             <el-card
@@ -104,6 +106,16 @@
       <el-button type="primary" @click="sentApproval()"> 发送 </el-button>
     </el-form>
   </el-dialog>
+  <el-dialog v-model="applicantDialogVisible" title="申请好友" width="400">
+    <el-form>
+      <el-form-item label="原因">
+        <el-input v-model="reason"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="addFriend(newFriendId)">
+        加入
+      </el-button>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -163,7 +175,7 @@ const changeFriend = (friend) => {
   chatType.value = "friend";
   getMessage();
   clearInterval(intervalId.value);
-  intervalId.value = setInterval(getMessage, 3000);
+  // intervalId.value = setInterval(getMessage, 3000);
 };
 
 const currentGroupId = ref(null);
@@ -173,12 +185,28 @@ const changeGroup = (group) => {
   chatType.value = "group";
   getMessage();
   clearInterval(intervalId.value);
-  intervalId.value = setInterval(getMessage, 3000);
+  // intervalId.value = setInterval(getMessage, 3000);
 };
+const applicantDialogVisible = ref(false);
+
+const reason = ref("");
+const appllicantAddFriend = (newFriendId1) => {
+  applicantDialogVisible.value = true;
+  newFriendId.value = newFriendId1;
+};
+
 const addFriend = async (newFriendId) => {
-  await request.post("/friend", {
-    uid: newFriendId,
-  });
+  await request.post(
+    "/friend",
+    {
+      uid: newFriendId,
+    },
+    {
+      headers: {
+        "X-Reason": reason.value || "无",
+      },
+    }
+  );
   await getFriends();
 };
 
