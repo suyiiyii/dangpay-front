@@ -1,3 +1,57 @@
+<style scoped>
+.scrollbar-demo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 4px;
+  background: var(--el-color-primary-light-9);
+  color: var(--el-color-primary);
+}
+.message-bubble {
+  display: inline-block;
+  max-width: 80%;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  background-color: #f0f0f0;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+  flex-shrink: 1;
+}
+
+.message-right {
+  text-align: right;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+}
+
+.message-left {
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.my-message {
+  background-color: #89d961;
+}
+
+.other-message {
+  background-color: #f0f0f0;
+}
+.message-time {
+  font-size: 12px;
+  color: #999;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+</style>
+
 <template>
   <section>
     <h1>消息</h1>
@@ -26,11 +80,9 @@
               <h2>{{ friend.username }}</h2>
             </el-card> -->
             <template v-for="friend in friends">
-              <UserCard
-                :data="friend"
-                type="small"
-                @click="changeFriend(friend)"
-              />
+              <div @click="changeFriend(friend)">
+                <UserCard :data="friend" type="small" />
+              </div>
             </template>
 
             <el-input
@@ -73,18 +125,34 @@
                 message.senderId === userId ? 'message-right' : 'message-left'
               "
             >
-              <el-avatar :icon="UserFilled" v-if=" message.senderId != userId" />
-              <div
-                class="message-bubble"
-                :class="
-                  message.senderId === userId ? 'my-message' : 'other-message'
-                "
-                @click="clickMsg(message)"
-              >
-                {{ message.content }}
-                <div class="message-time">{{ message.time }}</div>
+              <div>
+                <UserCard
+                  :uid="message.senderId"
+                  type="onlyLogo"
+                  v-if="message.senderId !== userId"
+                />
               </div>
-              <el-avatar :icon="UserFilled" v-if=" message.senderId === userId" />
+              <div>
+                <UserCard
+                  :uid="message.senderId"
+                  type="onlyLogo"
+                  v-if="message.senderId === userId"
+                />
+              </div>
+              <div>
+                <div
+                  class="message-bubble"
+                  :class="
+                    message.senderId === userId ? 'my-message' : 'other-message'
+                  "
+                  @click="clickMsg(message)"
+                >
+                  {{ message.content }}
+                </div>
+                <div class="message-time">
+                  {{ timeStr(message.createTime )}}
+                </div>
+              </div>
             </div>
           </template>
           <div ref="scrollAnchor"></div>
@@ -128,11 +196,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onUnmounted } from "vue";
+import { ref, onMounted, nextTick, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import useRequest from "~/request";
 import { useMyNewStore } from "~/myStore";
+import { timeStamp2timeStampString } from "~/tools";
 
 const request = useRequest();
 const myStore = useMyNewStore();
@@ -184,7 +253,11 @@ const changeFriend = (friend) => {
   chatType.value = "friend";
   getMessage();
   clearInterval(intervalId.value);
-  intervalId.value = setInterval(getMessage, 3000);
+  // intervalId.value = setInterval(getMessage, 3000);
+};
+
+const timeStr = (stamp) => {
+  return timeStamp2timeStampString(stamp*1000);
 };
 
 const currentGroupId = ref(null);
@@ -194,7 +267,7 @@ const changeGroup = (group) => {
   chatType.value = "group";
   getMessage();
   clearInterval(intervalId.value);
-  intervalId.value = setInterval(getMessage, 3000);
+  // intervalId.value = setInterval(getMessage, 3000);
 };
 const applicantDialogVisible = ref(false);
 
@@ -288,43 +361,3 @@ const sentApproval = async () => {
   await getMessage();
 };
 </script>
-
-<style scoped>
-.scrollbar-demo-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-  margin: 10px;
-  text-align: center;
-  border-radius: 4px;
-  background: var(--el-color-primary-light-9);
-  color: var(--el-color-primary);
-}
-.message-bubble {
-  display: inline-block;
-  max-width: 80%;
-  word-wrap: break-word;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px;
-  background-color: #f0f0f0;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-}
-
-.message-right {
-  text-align: right;
-}
-
-.message-left {
-  text-align: left;
-}
-
-.my-message {
-  background-color: #89d961;
-}
-
-.other-message {
-  background-color: #f0f0f0;
-}
-</style>

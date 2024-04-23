@@ -1,6 +1,6 @@
 <template>
   <section v-if="type == 'big'">
-    <el-avatar :icon="UserFilled" />
+    <el-avatar :src="user.avatar" />
     <div>
       <el-descriptions title="用户信息" :border="false">
         <el-descriptions-item label="用户名">{{
@@ -15,10 +15,13 @@
       </el-descriptions>
     </div>
   </section>
-  <section v-else>
-    <el-avatar :icon="UserFilled" />
+  <section v-if="type == 'small'">
+    <el-avatar :src="user.avatar" />
     <div>&nbsp; &nbsp;{{ user.username }}</div>
   </section>
+  <template v-if="type == 'onlyLogo'">
+    <el-avatar :src="user.avatar" />
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -36,6 +39,10 @@ const porps = defineProps({
     type: String,
     default: "big",
   },
+  uid: {
+    type: Number,
+    default: null,
+  },
 });
 
 const user = ref({
@@ -43,25 +50,37 @@ const user = ref({
   username: "666",
   role: "666",
   phone: "666",
+  avatar: "6",
 });
 
 onMounted(() => {
-  if (porps.data.username != null) {
-    user.value.username = porps.data.username;
+  var uid = null;
+  if (porps.uid != undefined || porps.uid != null) {
+    uid = porps.uid;
   } else {
-    var uid = null;
-    console.log(porps.data);
     if (porps.data.id != undefined || porps.data.id != null) {
       uid = porps.data.id;
     }
     if (porps.data.uid != undefined || porps.data.uid != null) {
       uid = porps.data.uid;
     }
-    myStore.getUserInfo(uid).then((res) => {
-      user.value = res;
-      user.value.role = porps.data.role;
-    });
   }
+
+  myStore.getUserInfo(uid).then((res) => {
+    console.log(res);
+    user.value.username = res.username;
+    user.value.role = porps.data.role;
+    user.value.phone = res.phone;
+    user.value.avatar = res.iconUrl;
+    if (porps.data.username != null) {
+      user.value.username = porps.data.username;
+    }
+    if (user.value.avatar === null) {
+      user.value.avatar =
+        "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+    }
+    console.log(user.value);
+  });
 });
 </script>
 
