@@ -62,7 +62,8 @@
 
     <h1>群组成员</h1>
     <template v-for="member in members">
-      <p>{{ member }}</p>
+      <!-- <p>{{ member }}</p> -->
+      <UserCard :data="member" />
       <template v-if="amIAdmin">
         <!-- 按钮：移除成员 -->
         <el-button type="danger" @click="removeMember(member.id)"
@@ -125,6 +126,7 @@ import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import GroupCard from "~/components/GroupCard.vue";
 import { useMyNewStore } from "~/myStore";
+import UserCard from "~/components/UserCard.vue";
 const myStore = useMyNewStore();
 const router = useRouter();
 const { params } = router.currentRoute.value;
