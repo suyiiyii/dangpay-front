@@ -17,14 +17,21 @@
             inactive-text="个人"
           />
           <template v-if="!isGroup">
-            <el-card
+            <!-- <el-card
               v-for="friend in friends"
               :key="friend.id"
               class="scrollbar-demo-item"
               @click="changeFriend(friend)"
             >
               <h2>{{ friend.username }}</h2>
-            </el-card>
+            </el-card> -->
+            <template v-for="friend in friends">
+              <UserCard
+                :data="friend"
+                type="small"
+                @click="changeFriend(friend)"
+              />
+            </template>
 
             <el-input
               v-model="newFriendId"
@@ -66,6 +73,7 @@
                 message.senderId === userId ? 'message-right' : 'message-left'
               "
             >
+              <el-avatar :icon="UserFilled" v-if=" message.senderId != userId" />
               <div
                 class="message-bubble"
                 :class="
@@ -76,6 +84,7 @@
                 {{ message.content }}
                 <div class="message-time">{{ message.time }}</div>
               </div>
+              <el-avatar :icon="UserFilled" v-if=" message.senderId === userId" />
             </div>
           </template>
           <div ref="scrollAnchor"></div>
