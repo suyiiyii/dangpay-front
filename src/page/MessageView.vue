@@ -69,6 +69,7 @@
                 :class="
                   message.senderId === userId ? 'my-message' : 'other-message'
                 "
+                @click="clickMsg(message)"
               >
                 {{ message.content }}
                 <div class="message-time">{{ message.time }}</div>
@@ -87,6 +88,24 @@
       </div>
     </div>
   </section>
+  <el-dialog v-model="dialogTableVisible" title="审批请求" width="400">
+    <el-form>
+      <p>{{ currentMsg.content }}</p>
+      <el-form-item label="是否同意">
+        <el-switch
+          v-model="approveRequest.isApprove"
+          active-text="同意"
+          inactive-text="拒绝"
+        ></el-switch>
+      </el-form-item>
+      <el-form-item label="原因">
+        <el-input v-model="approveRequest.reason"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="sentApproval()">
+        发送
+      </el-button>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -210,6 +229,22 @@ onMounted(() => {});
 onUnmounted(() => {
   clearInterval(intervalId.value);
 });
+
+const dialogTableVisible = ref(false);
+const currentMsg = ref(null);
+const clickMsg = (msg) => {
+  console.log(msg);
+  currentMsg.value = msg;
+  dialogTableVisible.value = true;
+};
+const approveRequest = ref({
+  isApprove: false,
+  reason: "",
+});
+const sentApproval = async () => {
+  await request.post(currentMsg.value.callback, approveRequest.value);
+  await getMessage();
+};
 </script>
 
 <style scoped>
