@@ -234,6 +234,9 @@ const dialogTableVisible = ref(false);
 const currentMsg = ref(null);
 const clickMsg = (msg) => {
   console.log(msg);
+  if (msg.callback === null || msg.callback === "") {
+    return;
+  }
   currentMsg.value = msg;
   dialogTableVisible.value = true;
 };
