@@ -17,7 +17,7 @@
   word-break: break-all;
   padding: 10px;
   border-radius: 10px;
-  margin: 10px;
+  margin: 5px;
   background-color: #f0f0f0;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
   flex-shrink: 1;
@@ -141,6 +141,12 @@
               </div>
               <div>
                 <div
+                  class="username"
+                  style="margin-left: 10px; margin-right: 10px;margin-top: 10px"
+                >
+                  <UserCard :uid="message.senderId" type="onlyname" />
+                </div>
+                <div
                   class="message-bubble"
                   :class="
                     message.senderId === userId ? 'my-message' : 'other-message'
@@ -150,7 +156,7 @@
                   {{ message.content }}
                 </div>
                 <div class="message-time">
-                  {{ timeStr(message.createTime )}}
+                  {{ timeStr(message.createTime) }}
                 </div>
               </div>
             </div>
@@ -257,8 +263,14 @@ const changeFriend = (friend) => {
 };
 
 const timeStr = (stamp) => {
-  return timeStamp2timeStampString(stamp*1000);
+  return timeStamp2timeStampString(stamp * 1000);
 };
+// 一个失败的方案，模板中无法使用async函数，因为模板是声明式的，无法使用await
+// const id2name = async (id) => {
+//   const res = await myStore.getUserInfo(id);
+//   console.log(res);
+//   return res.username;
+// };
 
 const currentGroupId = ref(null);
 const changeGroup = (group) => {

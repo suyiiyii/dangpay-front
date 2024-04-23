@@ -19,8 +19,12 @@
     <el-avatar :src="user.avatar" />
     <div>&nbsp; &nbsp;{{ user.username }}</div>
   </section>
+
   <template v-if="type == 'onlyLogo'">
     <el-avatar :src="user.avatar" />
+  </template>
+  <template v-if="type == 'onlyname'">
+    {{ user.username }}
   </template>
 </template>
 
