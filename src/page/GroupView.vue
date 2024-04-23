@@ -60,7 +60,9 @@
     </el-form-item>
 
     <!-- 按钮：更新信息 -->
-    <el-button type="primary" @click="createGroup">创建群组</el-button>
+    <el-button type="primary" @click="CreateGroupDialog = true"
+      >创建群组</el-button
+    >
   </el-form>
 
   <h1>我的群组</h1>
@@ -71,15 +73,23 @@
     </p>
   </template>
   <el-dialog v-model="dialogTableVisible" title="申请入群" width="400">
-      <el-form>
-        <el-form-item label="原因">
-          <el-input v-model="reason"></el-input>
-        </el-form-item>
-        <el-button type="primary" @click="joinGroup(currentGroupId)">
-          加入
-        </el-button>
-      </el-form>
-    </el-dialog>
+    <el-form>
+      <el-form-item label="原因">
+        <el-input v-model="reason"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="joinGroup(currentGroupId)">
+        加入
+      </el-button>
+    </el-form>
+  </el-dialog>
+  <el-dialog v-model="CreateGroupDialog" title="申请创建群组" width="400">
+    <el-form>
+      <el-form-item label="原因">
+        <el-input v-model="reason"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="createGroup()"> 加入 </el-button>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -110,9 +120,15 @@ const groupFrom = ref({
 });
 
 const createGroup = () => {
-  request.post("/group", groupFrom.value).then((res) => {
-    getGroups();
-  });
+  request
+    .post("/group", groupFrom.value, {
+      headers: {
+        "X-Reason": reason.value || "无",
+      },
+    })
+    .then((res) => {
+      ElMessage.success("申请成功");
+    });
 };
 
 const getMyGroups = () => {
@@ -144,6 +160,8 @@ const joinGroup = (groupId) => {
       getMyGroups();
     });
 };
+
+const CreateGroupDialog = ref(false);
 
 const banGroup = (groupId) => {
   request.post("/group/" + groupId + "/ban/").then((res) => {
