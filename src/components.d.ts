@@ -30,6 +30,7 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     GroupCard: typeof import('./components/GroupCard.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Logos: typeof import('./components/Logos.vue')['default']

@@ -83,8 +83,20 @@
         <el-input v-model="userData.phone"
       /></el-form-item>
       <el-form-item label="头像：">
-        <el-input v-model="userData.iconUrl"
-      /></el-form-item>
+        <!-- <el-input v-model="userData.iconUrl"/> -->
+
+        <el-upload
+          class="avatar-uploader"
+          :http-request="upload"
+          :show-file-list="false"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <el-icon v-else class="avatar-uploader-icon"
+            ><Plus
+          /></el-icon> </el-upload
+      ></el-form-item>
+
       <el-button type="primary" @click="getUserInfo(userData.id)"
         >获取个人信息</el-button
       >
@@ -111,11 +123,7 @@
       </el-form-item>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-button
-            type="primary"
-            style="width: 100%"
-            :loading="registerLoading"
-            @click="changePassword"
+          <el-button type="primary" style="width: 100%" @click="changePassword"
             >改密码</el-button
           >
         </el-col>
@@ -124,10 +132,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import axios from "axios";
 import { onMounted, ref } from "vue";
+import { useMyNewStore } from "~/myStore";
 import useRequest from "~/request";
+
+// import { Plus } from "@element-plus/icons-vue";
+
+import type { UploadProps, UploadRequestOptions } from "element-plus";
+const myStore = useMyNewStore();
 const request = useRequest();
 const username = ref("");
 const password = ref("");
@@ -212,7 +226,6 @@ onMounted(() => {
 });
 /*
 用户信息模板
-
 {
     "id": 2,
     "username": "2e11e732",
@@ -221,6 +234,64 @@ onMounted(() => {
     "iconUrl": "1111",
     "status": "normal"
 }
-
 */
+
+const uploadUrl = ref(myStore.base_url + "/upload");
+
+const imageUrl = ref("");
+
+import { ElMessage } from "element-plus";
+const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
+  if (rawFile.type !== "image/jpeg" && rawFile.type !== "image/png") {
+    ElMessage.error("Avatar picture must be JPG or PNG format!");
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 1) {
+    ElMessage.error("Avatar picture size can not exceed 1MB!");
+    return false;
+  }
+  return true;
+};
+
+const upload = (options: UploadRequestOptions) => {
+  const formData = new FormData();
+  formData.append("file", options.file);
+  request.post(uploadUrl.value, formData).then((res) => {
+    imageUrl.value = res.data;
+    userData.value.iconUrl = res.data;
+    options.onSuccess(res);
+  });
+};
 </script>
+
+
+
+<style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>
