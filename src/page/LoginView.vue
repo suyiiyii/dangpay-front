@@ -282,7 +282,7 @@ onMounted(() => {
 }
 */
 
-const uploadUrl = ref(myStore.base_url + "/upload");
+const uploadUrl = ref("/upload");
 
 const imageUrl = ref("");
 
