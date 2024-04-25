@@ -266,7 +266,9 @@ const changePassword = () => {
 
 onMounted(() => {
   userData.value.id = getUid();
-  getUserInfo(userData.value.id);
+  if (userData.value.id != null) {
+    getUserInfo(userData.value.id);
+  }
 });
 /*
 用户信息模板
