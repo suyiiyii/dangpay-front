@@ -193,7 +193,7 @@ const login = (username, password) => {
         grant_type: "password",
         username: username,
         password: password,
-        token: token.value,
+        captcha: token.value,
       },
       {
         headers: {
@@ -219,6 +219,7 @@ const register = () => {
     phone: phone.value,
     email: email.value,
     verifyCode: verifyCode.value,
+    captcha: token.value,
   });
 };
 
