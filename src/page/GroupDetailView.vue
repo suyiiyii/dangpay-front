@@ -158,13 +158,13 @@ const leaveGroup = () => {
   });
 };
 
-const hideGroup = (groupId) => {
+const hideGroup = () => {
   request.post("/group/" + groupId + "/hide").then((res) => {
     ElMessage.success("隐藏成功");
   });
 };
 
-const unhideGroup = (groupId) => {
+const unhideGroup = () => {
   request.post("/group/" + groupId + "/unhide").then((res) => {
     ElMessage.success("公开成功");
   });
