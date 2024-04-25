@@ -56,6 +56,26 @@
           placeholder="请输入手机号"
         ></el-input>
       </el-form-item>
+      <el-form-item>
+        <el-input
+          v-model="email"
+          type="text"
+          placeholder="请输入邮箱"
+        ></el-input>
+        <el-button
+          type="primary"
+          style="width: 100%"
+          @click="sendVerificationCode(email)"
+          >获取验证码</el-button
+        >
+      </el-form-item>
+      <el-form-item>
+        <el-input
+          v-model="verifyCode"
+          type="text"
+          placeholder="请输入验证码"
+        ></el-input>
+      </el-form-item>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-button
@@ -146,6 +166,8 @@ const request = useRequest();
 const username = ref("");
 const password = ref("");
 const phone = ref("");
+const email = ref("");
+const verifyCode = ref("");
 
 const login = (username, password) => {
   request
@@ -171,11 +193,13 @@ const logout = () => {
   localStorage.removeItem("token");
 };
 
-const register = (username, password, phone) => {
+const register = () => {
   request.post("/user/register", {
-    username: username,
-    password: password,
-    phone: phone,
+    username: username.value,
+    password: password.value,
+    phone: phone.value,
+    email: email.value,
+    verifyCode: verifyCode.value,
   });
 };
 
@@ -261,9 +285,13 @@ const upload = (options: UploadRequestOptions) => {
     options.onSuccess(res);
   });
 };
+
+const sendVerificationCode = (email: string) => {
+  request.post("/user/requireCode", {
+    email: email,
+  });
+};
 </script>
-
-
 
 <style scoped>
 .avatar-uploader .avatar {
