@@ -2,10 +2,6 @@
   <div>
     <h1>钱包详情</h1>
     <p>{{ wallet }}</p>
-    <h1>交易记录</h1>
-    <template v-for="transcation in transcations">
-      <p>{{ transcation }}</p>
-    </template>
     <h1>收款</h1>
 
     <el-input
@@ -76,6 +72,10 @@
       <el-button @click="dialogVisible = false">取消</el-button>
       <!-- { "code": "/GryBWBhGrFJLcLvq6pKcBK9RFTK+ii667VK1+NK+M2qAJQ7EqqpDIMb5kVcZUyR", "message": "向 dangpay 平台的 30005 转账 101 元", "platform": "dangpay", "isAmountSpecified": true, "specifiedAmount": 101, "expiredAt": 1713672506, "requestId": "f2788bee-4075-4cf9-a492-669fdcd833f6", "amountSpecified": true } -->
     </el-dialog>
+    <h1>交易记录</h1>
+    <template v-for="transcation in transcations">
+      <p>{{ transcation }}</p>
+    </template>
   </div>
 </template>
 
