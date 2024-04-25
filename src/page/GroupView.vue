@@ -183,7 +183,7 @@ onMounted(() => {
   getGroups();
   getMyGroups();
   myStore.amIAdmin().then((res) => {
-    amIAdmin.value = res.data;
+    amIAdmin.value = res;
   });
 });
 </script>
