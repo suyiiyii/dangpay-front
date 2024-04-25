@@ -98,7 +98,7 @@
       <h1>用户个人信息</h1>
       <el-form :model="userData">
         <el-form-item label="用户id：">
-          <el-input v-model="userData.id"
+          <el-input v-model="userData.id" disabled
         /></el-form-item>
         <el-form-item label="用户名：">
           <el-input v-model="userData.username"

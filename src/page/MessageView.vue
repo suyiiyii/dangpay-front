@@ -312,10 +312,14 @@ const getGroupMessages = async (gid) => {
 };
 
 const getMessage = async () => {
+  const oldMessages = messages.value;
   if (chatType.value === "friend") {
     messages.value = await getFriendMessages(curentFriend.value.uid);
   } else {
     messages.value = await getGroupMessages(currentGroupId.value);
+  }
+  if (oldMessages.length !== messages.value.length) {
+    scroll();
   }
   console.log(messages.value);
 };
