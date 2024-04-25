@@ -19,6 +19,7 @@
     "vue": "^3.4.21",
     "vue-qrcode-reader": "^5.5.3",
     "vue-router": "4",
+    "vue-turnstile": "^1.0.8",
     "vue3-qr-reader": "^1.0.0"
   },
   "devDependencies": {

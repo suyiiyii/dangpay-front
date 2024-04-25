@@ -1,154 +1,168 @@
 <template>
   <div>
-    <h2>请登录</h2>
-    <!-- 这个 @submit="login(username, password) 好像没什么用 -->
-    <el-form class="login-form" @submit="login(username, password)">
-      <el-form-item>
-        <el-input
-          v-model="username"
-          type="text"
-          placeholder="请输入用户名"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="password"
-          type="password"
-          show-password
-          placeholder="请输入密码"
-        ></el-input>
-      </el-form-item>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-button
-            type="primary"
-            style="width: 100%"
-            :loading="loginLoading"
-            @click="login(username, password)"
-            >登录</el-button
-          >
-        </el-col>
-      </el-row>
-    </el-form>
-    <el-button type="primary" @click="logout">注销登录</el-button>
+    <template v-if="!isLogined">
+      <el-switch
+        v-model="isLoginView"
+        active-text="登录"
+        inactive-text="注册"
+      ></el-switch>
+      <template v-if="isLoginView">
+        <h2>请登录</h2>
+        <!-- 这个 @submit="login(username, password) 好像没什么用 -->
+        <el-form class="login-form" @submit="login(username, password)">
+          <el-form-item>
+            <el-input
+              v-model="username"
+              type="text"
+              placeholder="请输入用户名"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="password"
+              type="password"
+              show-password
+              placeholder="请输入密码"
+            ></el-input>
+          </el-form-item>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-button
+                type="primary"
+                style="width: 100%"
+                @click="login(username, password)"
+                >登录</el-button
+              >
+            </el-col>
+          </el-row>
+        </el-form>
+      </template>
+      <template v-if="!isLoginView">
+        <h1>注册</h1>
+        <el-form class="login-form">
+          <el-form-item>
+            <el-input
+              v-model="username"
+              type="text"
+              placeholder="请输入用户名"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="password"
+              type="password"
+              show-password
+              placeholder="请输入密码"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="phone"
+              type="text"
+              placeholder="请输入手机号"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="email"
+              type="text"
+              placeholder="请输入邮箱"
+            ></el-input>
+            <el-button
+              type="primary"
+              style="width: 100%"
+              @click="sendVerificationCode(email)"
+              >获取验证码</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="verifyCode"
+              type="text"
+              placeholder="请输入验证码"
+            ></el-input>
+          </el-form-item>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-button type="primary" style="width: 100%" @click="register()"
+                >注册</el-button
+              >
+            </el-col>
+          </el-row>
+        </el-form>
+      </template>
 
-    <h1>注册</h1>
-    <el-form class="login-form">
-      <el-form-item>
-        <el-input
-          v-model="username"
-          type="text"
-          placeholder="请输入用户名"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="password"
-          type="password"
-          show-password
-          placeholder="请输入密码"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="phone"
-          type="text"
-          placeholder="请输入手机号"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="email"
-          type="text"
-          placeholder="请输入邮箱"
-        ></el-input>
-        <el-button
-          type="primary"
-          style="width: 100%"
-          @click="sendVerificationCode(email)"
-          >获取验证码</el-button
-        >
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="verifyCode"
-          type="text"
-          placeholder="请输入验证码"
-        ></el-input>
-      </el-form-item>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-button
-            type="primary"
-            style="width: 100%"
-            :loading="registerLoading"
-            @click="register(username, password, phone)"
-            >注册</el-button
-          >
-        </el-col>
-      </el-row>
-    </el-form>
-    <h1>用户个人信息</h1>
-    <el-form :model="userData">
-      <el-form-item label="用户id：">
-        <el-input v-model="userData.id"
-      /></el-form-item>
-      <el-form-item label="用户名：">
-        <el-input v-model="userData.username"
-      /></el-form-item>
-      <!-- <el-form-item label="密码：">
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAAYNNu9o2xOBhZ4h"></div>
+    </template>
+    <template v-if="isLogined">
+      <el-button type="primary" @click="logout">注销登录</el-button>
+      <h1>用户个人信息</h1>
+      <el-form :model="userData">
+        <el-form-item label="用户id：">
+          <el-input v-model="userData.id"
+        /></el-form-item>
+        <el-form-item label="用户名：">
+          <el-input v-model="userData.username"
+        /></el-form-item>
+        <!-- <el-form-item label="密码：">
         <el-input v-model="userData.password"
       /></el-form-item> -->
-      <el-form-item label="手机号：">
-        <el-input v-model="userData.phone"
-      /></el-form-item>
-      <el-form-item label="头像：">
-        <!-- <el-input v-model="userData.iconUrl"/> -->
+        <el-form-item label="手机号：">
+          <el-input v-model="userData.phone"
+        /></el-form-item>
+        <el-form-item label="头像：">
+          <!-- <el-input v-model="userData.iconUrl"/> -->
 
-        <el-upload
-          class="avatar-uploader"
-          :http-request="upload"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon"
-            ><Plus
-          /></el-icon> </el-upload
-      ></el-form-item>
-
-      <el-button type="primary" @click="getUserInfo(userData.id)"
-        >获取个人信息</el-button
-      >
-      <el-button type="primary" @click="updateUserInfo">更新个人信息</el-button>
-    </el-form>
-
-    <h1>改密码</h1>
-    <el-form class="login-form">
-      <el-form-item>
-        <el-input
-          v-model="oldPassword"
-          type="password"
-          show-password
-          placeholder="请输入旧密码"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="newPassword"
-          type="password"
-          show-password
-          placeholder="请输入新密码"
-        ></el-input>
-      </el-form-item>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-button type="primary" style="width: 100%" @click="changePassword"
-            >改密码</el-button
+          <el-upload
+            class="avatar-uploader"
+            :http-request="upload"
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload"
           >
-        </el-col>
-      </el-row>
-    </el-form>
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"
+              ><Plus
+            /></el-icon> </el-upload
+        ></el-form-item>
+
+        <el-button type="primary" @click="getUserInfo(userData.id)"
+          >获取个人信息</el-button
+        >
+        <el-button type="primary" @click="updateUserInfo"
+          >更新个人信息</el-button
+        >
+      </el-form>
+
+      <h1>改密码</h1>
+      <el-form class="login-form">
+        <el-form-item>
+          <el-input
+            v-model="oldPassword"
+            type="password"
+            show-password
+            placeholder="请输入旧密码"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="newPassword"
+            type="password"
+            show-password
+            placeholder="请输入新密码"
+          ></el-input>
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-button
+              type="primary"
+              style="width: 100%"
+              @click="changePassword"
+              >改密码</el-button
+            >
+          </el-col>
+        </el-row>
+      </el-form>
+    </template>
   </div>
 </template>
 
@@ -160,6 +174,7 @@ import useRequest from "~/request";
 
 // import { Plus } from "@element-plus/icons-vue";
 
+import VueTurnstile from "vue-turnstile";
 import type { UploadProps, UploadRequestOptions } from "element-plus";
 const myStore = useMyNewStore();
 const request = useRequest();
@@ -168,7 +183,9 @@ const password = ref("");
 const phone = ref("");
 const email = ref("");
 const verifyCode = ref("");
-
+const token = ref("");
+const isLoginView = ref(true);
+const isLogined = ref(myStore.getUserId() != null);
 const login = (username, password) => {
   request
     .post(
@@ -177,6 +194,7 @@ const login = (username, password) => {
         grant_type: "password",
         username: username,
         password: password,
+        token: token.value,
       },
       {
         headers: {
@@ -186,11 +204,13 @@ const login = (username, password) => {
     )
     .then((res) => {
       localStorage.setItem("token", res.data.access_token);
+      window.location.reload();
     });
 };
 
 const logout = () => {
   localStorage.removeItem("token");
+  window.location.reload();
 };
 
 const register = () => {
