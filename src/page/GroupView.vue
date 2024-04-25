@@ -71,6 +71,13 @@
       <group-card :data="group" />
       <!-- {{ group }} -->
     </p>
+    <template
+      v-if="group.status === 'ban' && checkRole('GroupCreator/g' + group.id)"
+    >
+      <el-button type="danger" @click="ubanGroupDialog = true,currentGroupId = group.id"
+        >申请解封群组</el-button
+      >
+    </template>
   </template>
   <el-dialog v-model="dialogTableVisible" title="申请入群" width="400">
     <el-form>
@@ -88,6 +95,16 @@
         <el-input v-model="reason"></el-input>
       </el-form-item>
       <el-button type="primary" @click="createGroup()"> 加入 </el-button>
+    </el-form>
+  </el-dialog>
+  <el-dialog v-model="ubanGroupDialog" title="申请解封群组" width="400">
+    <el-form>
+      <el-form-item label="原因">
+        <el-input v-model="reason"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="unbanGroup(currentGroupId)">
+        申请
+      </el-button>
     </el-form>
   </el-dialog>
 </template>
@@ -170,11 +187,22 @@ const banGroup = (groupId) => {
   });
 };
 
-const unbanGroup = (groupId) => {
-  request.post("/group/" + groupId + "/unban/").then((res) => {
-    ElMessage.success("unban成功");
-    getGroups();
-  });
+const ubanGroupDialog = ref(false);
+const unbanGroup = () => {
+  request
+    .post(
+      "/group/" + currentGroupId.value + "/unban/",
+      {},
+      {
+        headers: {
+          "X-Reason": reason.value || "无",
+        },
+      }
+    )
+    .then((res) => {
+      ElMessage.success("unban成功");
+      getGroups();
+    });
 };
 
 const amIAdmin = ref(false);
@@ -186,6 +214,10 @@ onMounted(() => {
     amIAdmin.value = res;
   });
 });
+
+const checkRole = (role) => {
+  return myStore.checkRole(role);
+};
 </script>
 
 <style scoped></style>

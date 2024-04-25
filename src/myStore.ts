@@ -5,6 +5,8 @@ export const useMyNewStore = defineStore("myNewStore", {
     return {
       base_url: import.meta.env.VITE_BASE_URL,
       usersCache: {} as { [key: number]: any },
+      roles: [] as string[],
+      getUserInfoLocks: {} as { [key: number]: Promise<any> },
     };
   },
   getters: {},
@@ -24,6 +26,9 @@ export const useMyNewStore = defineStore("myNewStore", {
       return data.uid;
     },
     async getRole() {
+      if (this.roles.length > 0) {
+        return this.roles;
+      }
       const request = useRequest();
       const userId = this.getUserId();
       if (userId == null) {
@@ -32,6 +37,7 @@ export const useMyNewStore = defineStore("myNewStore", {
       const response = await request.get(`/user/myRole`);
       const res: string[] = response.data.roles;
       console.log(res);
+      this.roles = res;
       return res;
     },
     async amIAdmin() {
@@ -44,12 +50,24 @@ export const useMyNewStore = defineStore("myNewStore", {
     },
     async getUserInfo(uid: number) {
       const request = useRequest();
+      if (this.getUserInfoLocks[uid]) {
+        await this.getUserInfoLocks[uid];
+      }
       if (this.usersCache[uid]) {
         return this.usersCache[uid];
       }
-      const response = await request.get(`/user/${uid}`);
+      this.getUserInfoLocks[uid] = request.get(`/user/${uid}`);
+      const response = await this.getUserInfoLocks[uid];
       this.usersCache[uid] = response.data;
+      delete this.getUserInfoLocks[uid];
       return response.data;
+    },
+    async checkRole(role: string) {
+      const roles = await this.getRole();
+      if (roles == null) {
+        return false;
+      }
+      return roles.includes(role);
     },
   },
 });
