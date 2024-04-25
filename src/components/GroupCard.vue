@@ -1,5 +1,5 @@
 <template>
-  <ElCard class="enterprise-card">
+  <ElCard class="enterprise-card" :class="banedstyle">
     <!-- <template #header>
       <div class="card-header">
         <span>{{ data.name }}</span>
@@ -7,7 +7,10 @@
       </div>
     </template> -->
     <div class="card-body">
-      <el-descriptions :title="data.name" style="margin-top: 20px;min-width:400px" >
+      <el-descriptions
+        :title="data.name"
+        style="margin-top: 20px; min-width: 400px"
+      >
         <el-descriptions-item label="群组人数:">{{
           data.pepoleCount
         }}</el-descriptions-item>
@@ -52,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 // import { ElCard } from "element-plus";
 import { defineProps } from "vue";
 
@@ -61,6 +64,13 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+});
+
+const banedstyle = computed(() => {
+  if (props.data.status === "ban") {
+    return "baned";
+  }
+  return "";
 });
 /*
     {
@@ -78,3 +88,9 @@ const props = defineProps({
     },
     */
 </script>
+
+<style scoped>
+.baned {
+  background-color: lightcoral;
+}
+</style>
