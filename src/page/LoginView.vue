@@ -91,8 +91,7 @@
           </el-row>
         </el-form>
       </template>
-
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAAYNNu9o2xOBhZ4h"></div>
+      <vue-turnstile site-key="0x4AAAAAAAYNNu9o2xOBhZ4h" v-model="token" />
     </template>
     <template v-if="isLogined">
       <el-button type="primary" @click="logout">注销登录</el-button>
