@@ -30,18 +30,20 @@
         <template #title> 私聊 </template>
       </el-menu-item>
     </RouterLink>
-    <RouterLink to="/transaction">
-      <el-menu-item index="/transaction">
-        <el-icon><Tickets /></el-icon>
-        <template #title> 交易记录 </template>
-      </el-menu-item>
-    </RouterLink>
-    <RouterLink to="/event">
-      <el-menu-item index="/event">
-        <el-icon><Unlock /></el-icon>
-        <template #title> 审计日志 </template>
-      </el-menu-item>
-    </RouterLink>
+    <template v-if="amIAdmin">
+      <RouterLink to="/transaction">
+        <el-menu-item index="/transaction">
+          <el-icon><Tickets /></el-icon>
+          <template #title> 交易记录 </template>
+        </el-menu-item>
+      </RouterLink>
+      <RouterLink to="/event">
+        <el-menu-item index="/event">
+          <el-icon><Unlock /></el-icon>
+          <template #title> 审计日志 </template>
+        </el-menu-item>
+      </RouterLink>
+    </template>
     <!-- <RouterLink to="/dish">
       <el-menu-item index="/dish">
         <el-icon><Food /></el-icon>
@@ -94,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import {
   Location,
   Document,
@@ -102,8 +104,15 @@ import {
   Setting,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
-
+import { useMyNewStore } from "~/myStore";
+const myStore = useMyNewStore();
+const amIAdmin = ref(false);
 const router = useRouter();
+
+onMounted(async () => {
+  const roles = (await myStore.getRole())!;
+  amIAdmin.value = roles.includes("admin");
+});
 
 // const isCollapse = ref(true);
 const isCollapse = ref(false);
