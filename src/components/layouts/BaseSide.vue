@@ -36,6 +36,12 @@
         <template #title> 交易记录 </template>
       </el-menu-item>
     </RouterLink>
+    <RouterLink to="/event">
+      <el-menu-item index="/event">
+        <el-icon><Unlock /></el-icon>
+        <template #title> 审计日志 </template>
+      </el-menu-item>
+    </RouterLink>
     <!-- <RouterLink to="/dish">
       <el-menu-item index="/dish">
         <el-icon><Food /></el-icon>

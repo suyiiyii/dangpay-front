@@ -42,6 +42,10 @@ const routes = [
     path: "/transaction",
     name: "Transaction",
     component: () => import("./page/TransactionView.vue"),
+  },  {
+    path: "/event",
+    name: "Event",
+    component: () => import("./page/EventView.vue"),
   }
 
   // 其他路由...

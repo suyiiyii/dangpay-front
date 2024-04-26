@@ -19,7 +19,7 @@
     <h1>全局交易记录</h1>
     <transaction-card :transactionList="transactionList" />
 
-    <template v-for="transaction in transactionList" :key="transaction.id">
+    <!-- <template v-for="transaction in transactionList" :key="transaction.id">
       <el-card>
         <p>交易ID: {{ transaction.id }}</p>
         <p>钱包ID: {{ transaction.walletId }}</p>
@@ -32,7 +32,7 @@
         <p>平台: {{ transaction.platform }}</p>
         <p>描述: {{ transaction.description }}</p>
       </el-card>
-    </template>
+    </template> -->
   </div>
 </template>
 <script setup lang="ts">

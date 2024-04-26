@@ -74,7 +74,9 @@
     <template
       v-if="group.status === 'ban' && checkRole('GroupCreator/g' + group.id)"
     >
-      <el-button type="danger" @click="ubanGroupDialog = true,currentGroupId = group.id"
+      <el-button
+        type="danger"
+        @click="(ubanGroupDialog = true), (currentGroupId = group.id)"
         >申请解封群组</el-button
       >
     </template>
