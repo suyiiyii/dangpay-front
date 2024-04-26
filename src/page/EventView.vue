@@ -3,22 +3,23 @@
   <el-pagination
     background
     layout="prev,pager,next"
-    :page-count="10"
+    :page-count="100"
     @current-change="pageChange"
   />
-  <el-table :data="logs" style="width: 100%" height="100hv">
-    <el-table-column prop="id" label="ID"></el-table-column>
-    <el-table-column prop="uid" label="用户ID"></el-table-column>
-    <el-table-column prop="method" label="方法"></el-table-column>
-    <el-table-column prop="permission" label="权限"></el-table-column>
-    <el-table-column prop="ip" label="IP"></el-table-column>
-    <el-table-column prop="ua" label="UA"></el-table-column>
+  <el-table :data="logs" style="width: 100%" height="1100">
+    <el-table-column sortable prop="id" label="ID"></el-table-column>
+    <el-table-column sortable prop="uid" label="用户ID"></el-table-column>
+    <el-table-column sortable prop="method" label="方法"></el-table-column>
+    <el-table-column sortable prop="permission" label="权限"></el-table-column>
+    <el-table-column sortable prop="ip" label="IP"></el-table-column>
+    <el-table-column sortable prop="ua" label="UA"></el-table-column>
     <el-table-column
+      sortable
       prop="createTime"
       label="创建时间"
       :formatter="createTimeFormatter"
     ></el-table-column>
-    <el-table-column prop="status" label="状态"></el-table-column>
+    <el-table-column sortable prop="status" label="状态"></el-table-column>
   </el-table>
 </template>
 <script setup lang="ts">
