@@ -38,6 +38,11 @@ const routes = [
     name: "Message",
     component: () => import("./page/MessageView.vue"),
   },
+  {
+    path: "/transaction",
+    name: "Transaction",
+    component: () => import("./page/TransactionView.vue"),
+  }
 
   // 其他路由...
 ];

@@ -30,6 +30,12 @@
         <template #title> 私聊 </template>
       </el-menu-item>
     </RouterLink>
+    <RouterLink to="/transaction">
+      <el-menu-item index="/transaction">
+        <el-icon><Tickets /></el-icon>
+        <template #title> 交易记录 </template>
+      </el-menu-item>
+    </RouterLink>
     <!-- <RouterLink to="/dish">
       <el-menu-item index="/dish">
         <el-icon><Food /></el-icon>

@@ -142,7 +142,11 @@
               <div>
                 <div
                   class="username"
-                  style="margin-left: 10px; margin-right: 10px;margin-top: 10px"
+                  style="
+                    margin-left: 10px;
+                    margin-right: 10px;
+                    margin-top: 10px;
+                  "
                 >
                   <UserCard :uid="message.senderId" type="onlyname" />
                 </div>
@@ -263,7 +267,7 @@ const changeFriend = (friend) => {
 };
 
 const timeStr = (stamp) => {
-  return timeStamp2timeStampString(stamp * 1000);
+  return timeStamp2timeStampString(Number(stamp) * 1000);
 };
 // 一个失败的方案，模板中无法使用async函数，因为模板是声明式的，无法使用await
 // const id2name = async (id) => {
