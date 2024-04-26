@@ -24,7 +24,7 @@ function useRequest() {
   );
   request.interceptors.response.use(
     (response) => {
-      ElMessage.success("操作成功");
+      // ElMessage.success("操作成功");
       return response;
     },
     (error) => {
