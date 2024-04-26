@@ -3,6 +3,7 @@
     :data="transactionList"
     style="width: 100%"
     :default-sort="{ prop: 'id', order: 'descending' }"
+    height="1100"
   >
     <el-table-column sortable prop="id" label="交易ID"></el-table-column>
     <el-table-column sortable prop="walletId" label="钱包ID"></el-table-column>
