@@ -5,7 +5,7 @@
   width: 100%;
   max-width: 1800px;
   min-height: 100vh;
-  background-color: #fff;
+  /* background-color: #fff; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   overflow: hidden;
@@ -17,30 +17,7 @@
 <template>
   <div class="app-container">
     <h1>全局交易记录</h1>
-    <el-table
-      :data="transactionList"
-      style="width: 100%"
-      :default-sort="{ prop: 'id', order: 'descending' }"
-    >
-      <el-table-column prop="id" label="交易ID"></el-table-column>
-      <el-table-column prop="walletId" label="钱包ID"></el-table-column>
-      <el-table-column prop="amount" label="金额"></el-table-column>
-      <el-table-column prop="type" label="类型"></el-table-column>
-      <el-table-column prop="status" label="状态"></el-table-column>
-      <el-table-column prop="relateUserId" label="关联用户ID"></el-table-column>
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        :formatter="createTimeFormatter"
-      ></el-table-column>
-      <el-table-column
-        prop="lastUpdate"
-        label="最后更新"
-        :formatter="updateTimeFormatter"
-      ></el-table-column>
-      <el-table-column prop="platform" label="平台"></el-table-column>
-      <el-table-column prop="description" label="描述"></el-table-column>
-    </el-table>
+    <transaction-card :transactionList="transactionList" />
 
     <template v-for="transaction in transactionList" :key="transaction.id">
       <el-card>

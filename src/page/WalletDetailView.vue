@@ -73,9 +73,10 @@
       <!-- { "code": "/GryBWBhGrFJLcLvq6pKcBK9RFTK+ii667VK1+NK+M2qAJQ7EqqpDIMb5kVcZUyR", "message": "向 dangpay 平台的 30005 转账 101 元", "platform": "dangpay", "isAmountSpecified": true, "specifiedAmount": 101, "expiredAt": 1713672506, "requestId": "f2788bee-4075-4cf9-a492-669fdcd833f6", "amountSpecified": true } -->
     </el-dialog>
     <h1>交易记录</h1>
-    <template v-for="transcation in transcations">
+    <!-- <template v-for="transcation in transcations">
       <p>{{ transcation }}</p>
-    </template>
+    </template> -->
+    <transaction-card :transactionList="transcations" />
   </div>
 </template>
 
