@@ -94,7 +94,7 @@
       <el-form-item label="原因">
         <el-input v-model="reason"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="createGroup()"> 加入 </el-button>
+      <el-button type="primary" @click="createGroup()"> 申请创建 </el-button>
     </el-form>
   </el-dialog>
   <el-dialog v-model="ubanGroupDialog" title="申请解封群组" width="400">
