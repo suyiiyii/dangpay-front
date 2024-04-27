@@ -19,7 +19,7 @@
       <!-- ban群组按钮 -->
       <el-button type="danger" @click="banGroup(group.id)">ban群组</el-button>
       <!-- unban群组按钮 -->
-      <el-button type="danger" @click="unbanGroup(group.id)"
+      <el-button type="danger" @click="currentGroupId=group.id,unbanGroup(group.id)"
         >unban群组</el-button
       >
     </template>
@@ -191,20 +191,27 @@ const banGroup = (groupId) => {
 
 const ubanGroupDialog = ref(false);
 const unbanGroup = () => {
-  request
-    .post(
-      "/group/" + currentGroupId.value + "/unban/",
-      {},
-      {
-        headers: {
-          "X-Reason": reason.value || "无",
-        },
-      }
-    )
-    .then((res) => {
+  if (amIAdmin.value) {
+    request.post("/group/" + currentGroupId.value + "/unban/").then((res) => {
       ElMessage.success("unban成功");
       getGroups();
     });
+  } else {
+    request
+      .post(
+        "/group/" + currentGroupId.value + "/unban/",
+        {},
+        {
+          headers: {
+            "X-Reason": reason.value || "无",
+          },
+        }
+      )
+      .then((res) => {
+        ElMessage.success("unban成功");
+        getGroups();
+      });
+  }
 };
 
 const amIAdmin = ref(false);
