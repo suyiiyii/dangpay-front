@@ -117,7 +117,7 @@ const createMoneyReceiveCode = (amount) => {
   request
     .post(`/wallet/${walletId.value}/createReceiveIdentity`, {
       isAmountSpecified: true,
-      amount: amount,
+      amount: Number(amount),
       description: "test",
     })
     .then((res) => {

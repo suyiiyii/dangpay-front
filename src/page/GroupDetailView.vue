@@ -225,7 +225,7 @@ const addMember = () => {
     .post(
       "/group/" + groupId + "/invite",
       {
-        uid: memberId.value,
+        uid: Number(memberId.value),
       },
       {
         headers: {

@@ -297,7 +297,7 @@ const addFriend = async (newFriendId) => {
   await request.post(
     "/friend",
     {
-      uid: newFriendId,
+      uid: Number(newFriendId),
     },
     {
       headers: {
