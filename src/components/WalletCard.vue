@@ -23,7 +23,7 @@
       wallet.fatherWalletId
     }}</el-descriptions-item>
     <el-descriptions-item label="最后更新时间">{{
-      wallet.lastUpdate
+      timeFormatter(wallet.lastUpdate)
     }}</el-descriptions-item>
     <el-descriptions-item label="状态">{{
       wallet.status
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { timeStamp2timeStampString } from "~/tools";
 
 const props = defineProps<{
   wallet: Wallet;
@@ -50,4 +51,8 @@ interface Wallet {
   lastUpdate: number;
   status: string;
 }
+
+const timeFormatter = (time: number) => {
+  return timeStamp2timeStampString(time*1000);
+};
 </script>
