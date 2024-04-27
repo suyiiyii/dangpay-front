@@ -119,7 +119,7 @@ import { ElMessage } from "element-plus";
 import type { UploadProps, UploadRequestOptions } from "element-plus";
 const beforeFileUpload: UploadProps["beforeUpload"] = (rawFile) => {
   if (rawFile.size / 1024 / 1024 > 10) {
-    ElMessage.error("Avatar picture size can not exceed 1MB!");
+    ElMessage.error("File size can not exceed 10MB!");
     return false;
   }
   return true;
