@@ -35,7 +35,9 @@
             type="primary"
             @click="downloadReimburse(scope.row.reimburse)"
             size="small"
-            :disabled="scope.row.reimburse===''"
+            :disabled="
+              scope.row.reimburse === '' || scope.row.reimburse === 'N/A'
+            "
             >下载</el-button
           >
           <!-- 上传按钮 -->
@@ -43,7 +45,7 @@
             type="primary"
             @click="uploadReimburse(scope.row.id)"
             size="small"
-            :disabled="!(scope.row.reimburse==='')"
+            :disabled="!(scope.row.reimburse === '')"
             >上传</el-button
           >
         </template>
