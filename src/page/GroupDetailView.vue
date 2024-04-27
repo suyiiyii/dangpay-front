@@ -119,10 +119,15 @@
           "
           >查看详情</el-button
         >
-        <el-input v-model="subWallet.amount" style="width: 200px"></el-input>
+        <el-input
+          v-model="subWalletsInput[subWallet.id]"
+          style="width: 200px"
+        ></el-input>
         <el-button
           type="primary"
-          @click="allocateSubWallet(subWallet.id, subWallet.amount)"
+          @click="
+            allocateSubWallet(subWallet.id, subWalletsInput[subWallet.id])
+          "
           >分配</el-button
         >
       </template>
@@ -241,16 +246,17 @@ onMounted(() => {
 const wallets = ref([]);
 const subWallets = ref([]);
 
+const subWalletsInput = ref({});
 const groupTotalAmount = computed(() => {
   if (wallets.value.length == 0) {
     return 0;
   }
   if (subWallets.value.length == 0) {
-    return wallets.value.reduce((acc, cur) => acc + cur.amount, 0);
+    return wallets.value.reduce((acc, cur) => acc + Number(cur.amount), 0);
   }
   return (
-    wallets.value.reduce((acc, cur) => acc + cur.amount, 0) +
-    subWallets.value.reduce((acc, cur) => acc + cur.amount, 0)
+    wallets.value.reduce((acc, cur) => acc + Number(cur.amount), 0) +
+    subWallets.value.reduce((acc, cur) => acc + Number(cur.amount), 0)
   );
 });
 
@@ -259,11 +265,14 @@ const getTotalAmountInFrozen = computed(() => {
     return 0;
   }
   if (subWallets.value.length == 0) {
-    return wallets.value.reduce((acc, cur) => acc + cur.amountInFrozen, 0);
+    return wallets.value.reduce(
+      (acc, cur) => acc + Number(cur.amountInFrozen),
+      0
+    );
   }
   return (
-    wallets.value.reduce((acc, cur) => acc + cur.amountInFrozen, 0) +
-    subWallets.value.reduce((acc, cur) => acc + cur.amountInFrozen, 0)
+    wallets.value.reduce((acc, cur) => acc + Number(cur.amountInFrozen), 0) +
+    subWallets.value.reduce((acc, cur) => acc + Number(cur.amountInFrozen), 0)
   );
 });
 
