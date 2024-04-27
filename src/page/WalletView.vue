@@ -10,7 +10,9 @@
         <wallet-card :wallet="wallet" />
         <el-button
           type="primary"
-          @click="router.push({ name: 'WalletDetail', params: { id: wallet.id } })"
+          @click="
+            router.push({ name: 'WalletDetail', params: { id: wallet.id } })
+          "
           >查看详情</el-button
         >
       </div>
@@ -37,9 +39,12 @@ onMounted(() => {
 });
 
 const createPersonalWallet = () => {
-  request.post("/wallet", {
-    type: "createPersonalWallet",
-  });
-  getMyWallets();
+  request
+    .post("/wallet", {
+      type: "createPersonalWallet",
+    })
+    .then((res) => {
+      getMyWallets();
+    });
 };
 </script>
