@@ -76,7 +76,7 @@
     <!-- <template v-for="transcation in transcations">
       <p>{{ transcation }}</p>
     </template> -->
-    <transaction-card :transactionList="transcations" />
+    <transaction-card :transactionList="transcations" :isShowReimburse="true" />
   </div>
 </template>
 

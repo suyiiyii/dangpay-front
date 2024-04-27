@@ -27,6 +27,13 @@
     ></el-table-column>
     <el-table-column sortable prop="platform" label="平台"></el-table-column>
     <el-table-column sortable prop="description" label="描述"></el-table-column>
+    <template v-if="isShowReimburse">
+      <el-table-column
+        sortable
+        prop="reimburse"
+        label="报销凭证"
+      ></el-table-column>
+    </template>
   </el-table>
 </template>
 
@@ -40,7 +47,8 @@ const myStore = useMyNewStore();
 const request = useRequest();
 
 const props = defineProps<{
-  transactionList: Transaction[];
+  transactionList: { type: Transaction[]; default: () => [] };
+  isShowReimburse: { type: boolean; default: false };
 }>();
 
 interface Transaction {
@@ -54,6 +62,7 @@ interface Transaction {
   lastUpdate: number;
   platform: string;
   description: string;
+  reimburse: string;
 }
 
 const createTimeFormatter = (

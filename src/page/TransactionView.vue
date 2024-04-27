@@ -55,6 +55,7 @@ interface Transaction {
   lastUpdate: number;
   platform: string;
   description: string;
+  reimburse: string;
 }
 const transactionList = ref([
   {
@@ -81,7 +82,7 @@ const getTransactionList = async () => {
 };
 
 onMounted(() => {
-    getTransactionList();
+  getTransactionList();
 });
 
 const createTimeFormatter = (
