@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>钱包详情</h1>
-    <p>{{ wallet }}</p>
+    <!-- <p>{{ wallet }}</p> -->
+    <wallet-card :wallet="wallet" />
     <h1>收款</h1>
 
     <el-input

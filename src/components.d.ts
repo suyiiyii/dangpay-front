@@ -14,6 +14,8 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElDescription: typeof import('element-plus/es')['ElDescription']
+    ElDescriptionItem: typeof import('element-plus/es')['ElDescriptionItem']
     ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
     ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
@@ -40,5 +42,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     TransactionCard: typeof import('./components/TransactionCard.vue')['default']
     UserCard: typeof import('./components/UserCard.vue')['default']
+    WalletCard: typeof import('./components/WalletCard.vue')['default']
   }
 }

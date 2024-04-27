@@ -5,7 +5,15 @@
     >
     <h1>我的钱包</h1>
     <template v-for="wallet in wallets">
-      <p @click="router.push(`/wallet/${wallet.id}`)">{{ wallet }}</p>
+      <!-- <p @click="router.push(`/wallet/${wallet.id}`)">{{ wallet }}</p> -->
+      <div>
+        <wallet-card :wallet="wallet" />
+        <el-button
+          type="primary"
+          @click="router.push({ name: 'WalletDetail', params: { id: wallet.id } })"
+          >查看详情</el-button
+        >
+      </div>
     </template>
   </div>
 </template>

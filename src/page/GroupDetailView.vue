@@ -95,11 +95,27 @@
         >创建群组钱包</el-button
       >
       <template v-for="wallet in wallets">
-        <p>{{ wallet }}</p>
+        <!-- <p>{{ wallet }}</p> -->
+        <wallet-card :wallet="wallet" />
+        <el-button
+          type="primary"
+          @click="
+            router.push({ name: 'WalletDetail', params: { id: wallet.id } })
+          "
+          >查看详情</el-button
+        >
       </template>
       <h2>子钱包</h2>
       <template v-for="subWallet in subWallets">
-        <p>{{ subWallet }}</p>
+        <!-- <p>{{ subWallet }}</p> -->
+        <wallet-card :wallet="subWallet" />
+        <el-button
+          type="primary"
+          @click="
+            router.push({ name: 'WalletDetail', params: { id: subWallet.id } })
+          "
+          >查看详情</el-button
+        >
         <el-input v-model="subWallet.amount" style="width: 200px"></el-input>
         <el-button
           type="primary"
