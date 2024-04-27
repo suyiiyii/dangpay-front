@@ -91,7 +91,11 @@
           </el-row>
         </el-form>
       </template>
-      <vue-turnstile site-key="0x4AAAAAAAYNNu9o2xOBhZ4h" v-model="token" />
+      <vue-turnstile
+        site-key="0x4AAAAAAAYNNu9o2xOBhZ4h"
+        v-model="token"
+        ref="turnstile"
+      />
     </template>
     <template v-if="isLogined">
       <el-button type="primary" @click="logout">注销登录</el-button>
@@ -185,6 +189,7 @@ const verifyCode = ref("");
 const token = ref("");
 const isLoginView = ref(true);
 const isLogined = ref(myStore.getUserId() != null);
+const turnstile = ref(null);
 const login = (username, password) => {
   request
     .post(
@@ -204,6 +209,11 @@ const login = (username, password) => {
     .then((res) => {
       localStorage.setItem("token", res.data.access_token);
       window.location.reload();
+      turnstile.value.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+      turnstile.value.reset();
     });
 };
 
@@ -213,14 +223,22 @@ const logout = () => {
 };
 
 const register = () => {
-  request.post("/user/register", {
-    username: username.value,
-    password: password.value,
-    phone: phone.value,
-    email: email.value,
-    verifyCode: verifyCode.value,
-    captcha: token.value,
-  });
+  request
+    .post("/user/register", {
+      username: username.value,
+      password: password.value,
+      phone: phone.value,
+      email: email.value,
+      verifyCode: verifyCode.value,
+      captcha: token.value,
+    })
+    .then((res) => {
+      turnstile.value.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+      turnstile.value.reset();
+    });
 };
 
 const userData = ref({});
@@ -309,9 +327,18 @@ const upload = (options: UploadRequestOptions) => {
 };
 
 const sendVerificationCode = (email: string) => {
-  request.post("/user/requireCode", {
-    email: email,
-  });
+  request
+    .post("/user/requireCode", {
+      email: email,
+      captcha: token.value,
+    })
+    .then((res) => {
+      turnstile.value.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+      turnstile.value.reset();
+    });
 };
 </script>
 
