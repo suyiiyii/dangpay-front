@@ -90,6 +90,9 @@
         >邀请</el-button
       >
       <h1>群组钱包</h1>
+      <!-- 展示总金额和被冻结的金额 -->
+      <p>总金额：{{ groupTotalAmount }}</p>
+      <p>被冻结的金额：{{ getTotalAmountInFrozen }}</p>
       <h2>主钱包</h2>
       <el-button type="primary" @click="createGroupWallet"
         >创建群组钱包</el-button
@@ -136,7 +139,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import useRequest from "~/request";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -237,6 +240,32 @@ onMounted(() => {
 
 const wallets = ref([]);
 const subWallets = ref([]);
+
+const groupTotalAmount = computed(() => {
+  if (wallets.value.length == 0) {
+    return 0;
+  }
+  if (subWallets.value.length == 0) {
+    return wallets.value.reduce((acc, cur) => acc + cur.amount, 0);
+  }
+  return (
+    wallets.value.reduce((acc, cur) => acc + cur.amount, 0) +
+    subWallets.value.reduce((acc, cur) => acc + cur.amount, 0)
+  );
+});
+
+const getTotalAmountInFrozen = computed(() => {
+  if (wallets.value.length == 0) {
+    return 0;
+  }
+  if (subWallets.value.length == 0) {
+    return wallets.value.reduce((acc, cur) => acc + cur.amountInFrozen, 0);
+  }
+  return (
+    wallets.value.reduce((acc, cur) => acc + cur.amountInFrozen, 0) +
+    subWallets.value.reduce((acc, cur) => acc + cur.amountInFrozen, 0)
+  );
+});
 
 const getWallets = () => {
   request.get("/group/" + groupId + "/wallet").then((res) => {
