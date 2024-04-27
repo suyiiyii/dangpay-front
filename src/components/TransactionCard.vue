@@ -35,8 +35,8 @@
             type="primary"
             @click="downloadReimburse(scope.row.reimburse)"
             size="small"
-            >下载</el-button
             :disabled="scope.row.reimburse===''"
+            >下载</el-button
           >
           <!-- 上传按钮 -->
           <el-button
