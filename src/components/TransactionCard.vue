@@ -28,17 +28,42 @@
     <el-table-column sortable prop="platform" label="平台"></el-table-column>
     <el-table-column sortable prop="description" label="描述"></el-table-column>
     <template v-if="isShowReimburse">
-      <el-table-column
-        sortable
-        prop="reimburse"
-        label="报销凭证"
-      ></el-table-column>
+      <el-table-column sortable prop="reimburse" label="报销凭证">
+        <template #default="scope">
+          <!-- 下载按钮 -->
+          <el-button
+            type="primary"
+            @click="downloadReimburse(scope.row.reimburse)"
+            size="small"
+            >下载</el-button
+            :disabled="scope.row.reimburse===''"
+          >
+          <!-- 上传按钮 -->
+          <el-button
+            type="primary"
+            @click="uploadReimburse(scope.row.id)"
+            size="small"
+            :disabled="!(scope.row.reimburse==='')"
+            >上传</el-button
+          >
+        </template>
+      </el-table-column>
     </template>
   </el-table>
+  <el-dialog title="上传报销凭证" v-model="uploadDialogVisible" width="30%">
+    <el-upload
+      action="https://jsonplaceholder.typicode.com/posts/"
+      name="file"
+      :http-request="upload"
+      :before-upload="beforeFileUpload"
+    >
+      <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import useRequest from "~/request";
 import { useMyNewStore } from "~/myStore";
 import { timeStamp2timeStampString } from "~/tools";
@@ -76,5 +101,38 @@ const updateTimeFormatter = (
   column: TableColumnCtx<Transaction>
 ) => {
   return timeStamp2timeStampString(1000 * row.lastUpdate);
+};
+
+const downloadReimburse = (reimburse: string) => {
+  console.log(reimburse);
+  window.open(reimburse);
+};
+
+const uploadDialogVisible = ref(false);
+const uploadReimburse = (id: number) => {
+  currentTransactionId.value = id;
+  console.log(id);
+  uploadDialogVisible.value = true;
+};
+
+import { ElMessage } from "element-plus";
+import type { UploadProps, UploadRequestOptions } from "element-plus";
+const beforeFileUpload: UploadProps["beforeUpload"] = (rawFile) => {
+  if (rawFile.size / 1024 / 1024 > 10) {
+    ElMessage.error("Avatar picture size can not exceed 1MB!");
+    return false;
+  }
+  return true;
+};
+const currentTransactionId = ref(0);
+const uploadUrl = computed(
+  () => `/transaction/${currentTransactionId.value}/reimburse`
+);
+const upload = (options: UploadRequestOptions) => {
+  const formData = new FormData();
+  formData.append("file", options.file);
+  request.post(uploadUrl.value, formData).then((res) => {
+    options.onSuccess(res);
+  });
 };
 </script>
