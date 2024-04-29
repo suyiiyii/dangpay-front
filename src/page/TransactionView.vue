@@ -11,12 +11,21 @@
   overflow: hidden;
   box-sizing: border-box;
   padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
 
 <template>
   <div class="app-container">
     <h1>全局交易记录</h1>
+    <el-pagination
+      background
+      layout="prev,pager,next"
+      :page-count="100"
+      @current-change="pageChange"
+    />
     <transaction-card :transactionList="transactionList" />
 
     <!-- <template v-for="transaction in transactionList" :key="transaction.id">
@@ -72,9 +81,14 @@ const transactionList = ref([
   },
 ]);
 
-const getTransactionList = async () => {
-  var page = 1;
-  var size = 100;
+const page = ref(1);
+const size = ref(100);
+const pageChange = (newPage: number) => {
+  page.value = newPage;
+  getTransactionList(newPage, size.value);
+  console.log(newPage);
+};
+const getTransactionList = async (page: number, size: number) => {
   const res = await request.get(
     "/transaction?" + "page=" + page + "&size=" + size
   );
@@ -82,7 +96,7 @@ const getTransactionList = async () => {
 };
 
 onMounted(() => {
-  getTransactionList();
+  getTransactionList(page.value, size.value);
 });
 
 const createTimeFormatter = (
