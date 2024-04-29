@@ -3,76 +3,80 @@
     <h1>钱包详情</h1>
     <!-- <p>{{ wallet }}</p> -->
     <wallet-card :wallet="wallet" />
-    <h1>收款</h1>
+    <template v-if="wallet.ownerId === uid">
+      <h1>收款</h1>
 
-    <el-input
-      style="width: 200px"
-      v-model="amount"
-      type="number"
-      placeholder="请输入收款金额"
-    ></el-input>
-    <el-button type="primary" @click="createMoneyReceiveCode(amount)"
-      >生成收款码</el-button
-    >
-    <!-- <QRCodeVue3 :value="qrcode" :key="qrcode" /> -->
-    <br />
-    <n-qr-code :value="qrcode" v-if="qrcode" size="400" />
-    <p>二维码信息：{{ qrcode }}</p>
-    <hr />
-
-    <h1>扫码</h1>
-    <main class="reader">
-      <p>code from <a href="https://github.com/MuGuiLin/QRCode">MuGuiLin</a></p>
-
-      <button class="sweep" @click="stream = true">扫一扫</button>
-
-      <button class="sweep">
-        <qr-capture :capture="capture" @decode="onDecode"></qr-capture
-        >从相册选择
-      </button>
-
-      <qr-stream
-        class="stream"
-        v-show="stream"
-        :torch="torch"
-        :camera="camera"
-        @onInit="onInit"
-        @decode="onDecode"
-      >
-        <p v-show="error">{{ error }}</p>
-        <button @click="torch = !torch">
-          {{ torch ? "关闭闪光灯" : "开启闪光灯" }}
-        </button>
-        <button @click="switchCamera">
-          {{ "rear" == camera ? "前置摄像头" : "后置摄像头" }}
-        </button>
-      </qr-stream>
-
-      <h3>二维码识别结果</h3>
-      <textarea
-        class="result"
-        v-model="result"
-        placeholder="二维码识别结果！"
-      ></textarea>
-      <!-- 手动提交扫码信息给后端按钮 -->
-      <el-button @click="uploadQrCode(result)">手动提交扫码信息</el-button>
-    </main>
-    <p>{{ scanQrCodeServerResponse }}</p>
-    <el-dialog v-model="dialogVisible" title="确认支付" width="500">
-      <p>{{ scanQrCodeServerResponse }}</p>
-      <p>支付码：{{ scanQrCodeServerResponse.code }}</p>
-      <p>第三方平台：{{ scanQrCodeServerResponse.platform }}</p>
-      <p>支付金额：{{ scanQrCodeServerResponse.specifiedAmount }}</p>
-      <p>支付信息：{{ scanQrCodeServerResponse.message }}</p>
       <el-input
-        v-model="password"
-        type="password"
-        placeholder="请输入支付密码"
+        style="width: 200px"
+        v-model="amount"
+        type="number"
+        placeholder="请输入收款金额"
       ></el-input>
-      <el-button type="primary" @click="confirmPay">确认</el-button>
-      <el-button @click="dialogVisible = false">取消</el-button>
-      <!-- { "code": "/GryBWBhGrFJLcLvq6pKcBK9RFTK+ii667VK1+NK+M2qAJQ7EqqpDIMb5kVcZUyR", "message": "向 dangpay 平台的 30005 转账 101 元", "platform": "dangpay", "isAmountSpecified": true, "specifiedAmount": 101, "expiredAt": 1713672506, "requestId": "f2788bee-4075-4cf9-a492-669fdcd833f6", "amountSpecified": true } -->
-    </el-dialog>
+      <el-button type="primary" @click="createMoneyReceiveCode(amount)"
+        >生成收款码</el-button
+      >
+      <!-- <QRCodeVue3 :value="qrcode" :key="qrcode" /> -->
+      <br />
+      <n-qr-code :value="qrcode" v-if="qrcode" size="400" />
+      <p>二维码信息：{{ qrcode }}</p>
+      <hr />
+
+      <h1>扫码</h1>
+      <main class="reader">
+        <p>
+          code from <a href="https://github.com/MuGuiLin/QRCode">MuGuiLin</a>
+        </p>
+
+        <button class="sweep" @click="stream = true">扫一扫</button>
+
+        <button class="sweep">
+          <qr-capture :capture="capture" @decode="onDecode"></qr-capture
+          >从相册选择
+        </button>
+
+        <qr-stream
+          class="stream"
+          v-show="stream"
+          :torch="torch"
+          :camera="camera"
+          @onInit="onInit"
+          @decode="onDecode"
+        >
+          <p v-show="error">{{ error }}</p>
+          <button @click="torch = !torch">
+            {{ torch ? "关闭闪光灯" : "开启闪光灯" }}
+          </button>
+          <button @click="switchCamera">
+            {{ "rear" == camera ? "前置摄像头" : "后置摄像头" }}
+          </button>
+        </qr-stream>
+
+        <h3>二维码识别结果</h3>
+        <textarea
+          class="result"
+          v-model="result"
+          placeholder="二维码识别结果！"
+        ></textarea>
+        <!-- 手动提交扫码信息给后端按钮 -->
+        <el-button @click="uploadQrCode(result)">手动提交扫码信息</el-button>
+      </main>
+      <p>{{ scanQrCodeServerResponse }}</p>
+      <el-dialog v-model="dialogVisible" title="确认支付" width="500">
+        <p>{{ scanQrCodeServerResponse }}</p>
+        <p>支付码：{{ scanQrCodeServerResponse.code }}</p>
+        <p>第三方平台：{{ scanQrCodeServerResponse.platform }}</p>
+        <p>支付金额：{{ scanQrCodeServerResponse.specifiedAmount }}</p>
+        <p>支付信息：{{ scanQrCodeServerResponse.message }}</p>
+        <el-input
+          v-model="password"
+          type="password"
+          placeholder="请输入支付密码"
+        ></el-input>
+        <el-button type="primary" @click="confirmPay">确认</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <!-- { "code": "/GryBWBhGrFJLcLvq6pKcBK9RFTK+ii667VK1+NK+M2qAJQ7EqqpDIMb5kVcZUyR", "message": "向 dangpay 平台的 30005 转账 101 元", "platform": "dangpay", "isAmountSpecified": true, "specifiedAmount": 101, "expiredAt": 1713672506, "requestId": "f2788bee-4075-4cf9-a492-669fdcd833f6", "amountSpecified": true } -->
+      </el-dialog>
+    </template>
     <h1>交易记录</h1>
     <!-- <template v-for="transcation in transcations">
       <p>{{ transcation }}</p>
@@ -89,9 +93,13 @@ import { useRouter } from "vue-router";
 import { QrStream, QrCapture } from "vue3-qr-reader";
 import { NQrCode } from "naive-ui";
 import { ElMessage } from "element-plus/es";
+import { useMyNewStore } from "~/myStore";
 const router = useRouter();
 const request = useRequest();
 const walletId = ref(router.currentRoute.value.params.id);
+const myStore = useMyNewStore();
+
+const uid = myStore.getUserId();
 
 const wallet = ref({});
 const getWalletDetail = () => {
