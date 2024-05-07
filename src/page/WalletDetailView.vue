@@ -17,7 +17,7 @@
       >
       <!-- <QRCodeVue3 :value="qrcode" :key="qrcode" /> -->
       <br />
-      <n-qr-code :value="qrcode" v-if="qrcode" size="400" />
+      <n-qr-code :value="qrcode" v-if="qrcode" size="200" />
       <p>二维码信息：{{ qrcode }}</p>
       <hr />
 
