@@ -1,5 +1,9 @@
 <template>
   <div>
+    <img class="logo vue" src="../assets/logo.png" alt="" />
+    <div>
+      <h1 color="$ep-color-primary">欢迎使用{{ platform }}</h1>
+    </div>
     <template v-if="!isLogined">
       <el-switch
         v-model="isLoginView"
@@ -340,6 +344,21 @@ const sendVerificationCode = (email: string) => {
       turnstile.value.reset();
     });
 };
+
+const platform = ref("dangpay");
+const updatePlatform = () => {
+  if (localStorage.getItem("platform")) {
+    platform.value = localStorage.getItem("platform");
+  } else {
+    request.get("/health").then((res) => {
+      platform.value = res.data.platform;
+      localStorage.setItem("platform", platform.value);
+    });
+  }
+};
+onMounted(() => {
+  updatePlatform();
+});
 </script>
 
 <style scoped>
@@ -370,5 +389,17 @@ const sendVerificationCode = (email: string) => {
   width: 178px;
   height: 178px;
   text-align: center;
+}
+
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
