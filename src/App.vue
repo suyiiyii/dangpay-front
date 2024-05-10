@@ -32,4 +32,13 @@
   flex-direction: column;
   align-items: center;
 }
+
+
+.ep-button {
+  /* font-family: Inter, system-ui, Avenir, "Helvetica Neue", Helvetica,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif  !important; */
+  padding: 8px 16px !important;
+  /* background-color: aqua !important; */
+}
 </style>
