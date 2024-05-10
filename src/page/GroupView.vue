@@ -220,7 +220,10 @@ const amIAdmin = ref(false);
 
 onMounted(() => {
   getGroups();
-  getMyGroups();
+  // 如果有token，就获取我的群组
+  if (localStorage.getItem("token")) {
+    getMyGroups();
+  }
   myStore.amIAdmin().then((res) => {
     amIAdmin.value = res;
   });

@@ -46,6 +46,10 @@ const routes = [
     path: "/event",
     name: "Event",
     component: () => import("./page/EventView.vue"),
+  }, {
+    path: "/tttest",
+    name: "Event",
+    component: () => import("./page/TestView.vue"),
   }
 
   // 其他路由...
