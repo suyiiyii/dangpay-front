@@ -64,11 +64,11 @@
         </template>
         <br />
         <hr />
-
-        <!-- 按钮：退出群组 -->
-        <el-button type="danger" @click="leaveGroup">退出群组</el-button>
       </el-form>
     </template>
+
+    <!-- 按钮：退出群组 -->
+    <el-button type="danger" @click="leaveGroup">退出群组</el-button>
     <h1>群组成员</h1>
     <template v-for="member in members">
       <!-- <p>{{ member }}</p> -->
