@@ -3,63 +3,72 @@
     <h1>群组详情</h1>
     <group-card :data="groupFrom" />
     <!-- <p>{{ groupFrom }}</p> -->
-    <el-form :model="groupFrom">
-      <!-- 表单项：name -->
-      <el-form-item label="名称：">
-        <el-input v-model="groupFrom.name" :disabled="!amIAdmin"></el-input>
-      </el-form-item>
+    <template v-if="amIAdmin">
+      <el-form :model="groupFrom">
+        <!-- 表单项：name -->
+        <el-form-item label="名称：">
+          <el-input v-model="groupFrom.name" :disabled="!amIAdmin"></el-input>
+        </el-form-item>
 
-      <!-- 表单项：pepoleCount
+        <!-- 表单项：pepoleCount
       <el-form-item label="人数：">
         <el-input v-model="groupFrom.pepoleCount"></el-input>
       </el-form-item> -->
 
-      <!-- 表单项：enterpriseScale -->
-      <el-form-item label="企业规模：">
-        <el-input
-          v-model="groupFrom.enterpriseScale"
-          :disabled="!amIAdmin"
-        ></el-input>
-      </el-form-item>
+        <!-- 表单项：enterpriseScale -->
+        <el-form-item label="企业规模：">
+          <el-input
+            v-model="groupFrom.enterpriseScale"
+            :disabled="!amIAdmin"
+          ></el-input>
+        </el-form-item>
 
-      <!-- 表单项：industry -->
-      <el-form-item label="行业：">
-        <el-input v-model="groupFrom.industry" :disabled="!amIAdmin"></el-input>
-      </el-form-item>
+        <!-- 表单项：industry -->
+        <el-form-item label="行业：">
+          <el-input
+            v-model="groupFrom.industry"
+            :disabled="!amIAdmin"
+          ></el-input>
+        </el-form-item>
 
-      <!-- 表单项：address -->
-      <el-form-item label="地址：">
-        <el-input v-model="groupFrom.address" :disabled="!amIAdmin"></el-input>
-      </el-form-item>
+        <!-- 表单项：address -->
+        <el-form-item label="地址：">
+          <el-input
+            v-model="groupFrom.address"
+            :disabled="!amIAdmin"
+          ></el-input>
+        </el-form-item>
 
-      <!-- 表单项：contact -->
-      <el-form-item label="联系方式：">
-        <el-input v-model="groupFrom.contact" :disabled="!amIAdmin"></el-input>
-      </el-form-item>
+        <!-- 表单项：contact -->
+        <el-form-item label="联系方式：">
+          <el-input
+            v-model="groupFrom.contact"
+            :disabled="!amIAdmin"
+          ></el-input>
+        </el-form-item>
+        <template v-if="amIAdmin">
+          <!-- 按钮：更新信息 -->
+          <el-button type="primary" @click="updateGroup">更新信息</el-button>
 
-      <template v-if="amIAdmin">
-        <!-- 按钮：更新信息 -->
-        <el-button type="primary" @click="updateGroup">更新信息</el-button>
+          <!-- 按钮：不公开群组 -->
+          <el-button type="danger" @click="hideGroup(groupFrom.id)"
+            >不公开群组</el-button
+          >
 
-        <!-- 按钮：不公开群组 -->
-        <el-button type="danger" @click="hideGroup(groupFrom.id)"
-          >不公开群组</el-button
-        >
+          <!-- 按钮：公开群组 -->
+          <el-button type="danger" @click="unhideGroup(groupFrom.id)"
+            >公开群组</el-button
+          >
+          <!-- 按钮：解散群组 -->
+          <el-button type="danger" @click="destroyGroup">解散群组</el-button>
+        </template>
+        <br />
+        <hr />
 
-        <!-- 按钮：公开群组 -->
-        <el-button type="danger" @click="unhideGroup(groupFrom.id)"
-          >公开群组</el-button
-        >
-        <!-- 按钮：解散群组 -->
-        <el-button type="danger" @click="destroyGroup">解散群组</el-button>
-      </template>
-      <br />
-      <hr />
-
-      <!-- 按钮：退出群组 -->
-      <el-button type="danger" @click="leaveGroup">退出群组</el-button>
-    </el-form>
-
+        <!-- 按钮：退出群组 -->
+        <el-button type="danger" @click="leaveGroup">退出群组</el-button>
+      </el-form>
+    </template>
     <h1>群组成员</h1>
     <template v-for="member in members">
       <!-- <p>{{ member }}</p> -->
