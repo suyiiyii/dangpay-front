@@ -62,7 +62,7 @@
       </main>
       <p>{{ scanQrCodeServerResponse }}</p>
       <el-dialog v-model="dialogVisible" title="确认支付" width="500">
-        <p>{{ scanQrCodeServerResponse }}</p>
+        <!-- <p>{{ scanQrCodeServerResponse }}</p> -->
         <p>支付码：{{ scanQrCodeServerResponse.code }}</p>
         <p>第三方平台：{{ scanQrCodeServerResponse.platform }}</p>
         <p>支付金额：{{ scanQrCodeServerResponse.specifiedAmount }}</p>
