@@ -1,3 +1,7 @@
+# Tips
+该项目为[铛铛支付](https://github.com/suyiiyii/dangpay)项目的前端，是参与校内工作室的考核项目
+
+
 # element-plus-vite-starter
 
 > A starter kit for Element Plus with Vite
